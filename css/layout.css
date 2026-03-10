@@ -1,0 +1,76 @@
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+  padding: 1.4rem 2.2rem 1rem;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--brand-primary);
+  margin: 0;
+}
+
+.app-header h1 {
+  font-size: clamp(1.3rem, 2vw, 2rem);
+  font-family: var(--font-display);
+}
+
+.app-main {
+  display: grid;
+  gap: 1.4rem;
+  grid-template-columns: minmax(320px, 430px) 1fr;
+  padding: 0 2.2rem 2rem;
+}
+
+.control-panel {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 1rem;
+  max-height: calc(100vh - 130px);
+  overflow: auto;
+}
+
+.preview-panel {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 1rem;
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.card-stage {
+  min-height: 380px;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  background: linear-gradient(145deg, #eef2f8, #f9fafb);
+}
+
+@media (max-width: 1024px) {
+  .app-main {
+    grid-template-columns: 1fr;
+  }
+
+  .control-panel {
+    max-height: unset;
+  }
+}
