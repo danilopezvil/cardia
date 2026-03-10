@@ -1,0 +1,68 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: radial-gradient(circle at top left, #ffffff, var(--bg) 50%);
+}
+
+h1,
+h2,
+h3,
+legend {
+  margin: 0;
+}
+
+input,
+select,
+textarea,
+button {
+  font: inherit;
+}
+
+label {
+  display: grid;
+  gap: 0.4rem;
+  font-size: 0.84rem;
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+
+input,
+select,
+textarea {
+  border: 1px solid var(--line);
+  background: #fff;
+  padding: 0.7rem 0.82rem;
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--brand-primary), white 65%);
+  outline-offset: 2px;
+}
+
+fieldset {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  margin: 0 0 1rem;
+  padding: 1rem;
+  background: var(--surface-muted);
+}
+
+legend {
+  padding: 0 0.35rem;
+  font-size: 0.9rem;
+  color: var(--ink);
+  font-weight: 700;
+}
