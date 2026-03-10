@@ -1,72 +1,103 @@
-import { DEFAULT_STATE, SAMPLE_DATA } from './data.js';
-import { getDom, fillForm, readFileAsDataUrl, setFieldError } from './dom.js';
-import { exportPreviewAsPng, printPreview } from './export.js';
-import { renderPreview } from './preview.js';
-import { getState, initializeState, patchState, resetState, subscribe, validateField } from './state.js';
-import { clearStoredState, loadStoredState } from './storage.js';
+import { defaults } from './modules/config.js';
+import { loadState, saveState, clearState } from './modules/storage.js';
+import { fileToDataUrl } from './modules/file.js';
+import { renderQr } from './modules/qr.js';
+import { renderCard, toggleSide } from './modules/render.js';
+import { exportAsPng } from './modules/export.js';
 
-const dom = getDom();
+const form = document.getElementById('cardForm');
+const elements = {
+  cardFront: document.getElementById('cardFront'),
+  cardBack: document.getElementById('cardBack'),
+  captureArea: document.getElementById('captureArea'),
+  logoPreview: document.getElementById('logoPreview'),
+  avatarPreview: document.getElementById('avatarPreview'),
+  qrContainer: document.getElementById('qrContainer'),
+  namePreview: document.getElementById('namePreview'),
+  titlePreview: document.getElementById('titlePreview'),
+  companyPreview: document.getElementById('companyPreview'),
+  taglinePreview: document.getElementById('taglinePreview'),
+  phonePreview: document.getElementById('phonePreview'),
+  emailPreview: document.getElementById('emailPreview'),
+  webPreview: document.getElementById('webPreview'),
+  addressPreview: document.getElementById('addressPreview'),
+  credentialPreview: document.getElementById('credentialPreview'),
+  backCompanyPreview: document.getElementById('backCompanyPreview'),
+  backNamePreview: document.getElementById('backNamePreview'),
+  backWebsitePreview: document.getElementById('backWebsitePreview'),
+  profilePreview: document.getElementById('profilePreview'),
+  backNotePreview: document.getElementById('backNotePreview'),
+};
 
-initializeState(loadStoredState());
-fillForm(dom.inputs, getState());
+let state = loadState();
 
-subscribe((state) => {
-  fillForm(dom.inputs, state);
-  renderPreview(dom, state);
+hydrateForm(state);
+paint();
+
+form.addEventListener('input', () => {
+  const formData = new FormData(form);
+  state = { ...state, ...Object.fromEntries(formData.entries()) };
+  paint();
 });
 
-renderPreview(dom, getState());
-bindEvents();
+document.getElementById('logoInput').addEventListener('change', async (event) => {
+  state.logoData = await fileToDataUrl(event.target.files[0]);
+  paint();
+});
 
-function bindEvents() {
-  dom.form.addEventListener('input', onFormInput);
-  dom.form.addEventListener('change', onFormInput);
+document.getElementById('avatarInput').addEventListener('change', async (event) => {
+  state.avatarData = await fileToDataUrl(event.target.files[0]);
+  paint();
+});
 
-  dom.inputs.logoUpload.addEventListener('change', async (event) => {
-    const logoData = await readFileAsDataUrl(event.target.files?.[0]);
-    patchState({ logoData });
+document.querySelectorAll('.preview-toggle').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.preview-toggle').forEach((b) => b.classList.remove('active'));
+    btn.classList.add('active');
+    toggleSide(btn.dataset.side, elements);
   });
+});
 
-  dom.inputs.profileUpload.addEventListener('change', async (event) => {
-    const profileData = await readFileAsDataUrl(event.target.files?.[0]);
-    patchState({ profileData });
+document.getElementById('savePreset').addEventListener('click', () => saveState(state));
+
+document.getElementById('resetCard').addEventListener('click', () => {
+  state = { ...defaults };
+  clearState();
+  form.reset();
+  hydrateForm(state);
+  paint();
+});
+
+document.getElementById('printCard').addEventListener('click', () => {
+  elements.cardFront.classList.remove('is-hidden');
+  elements.cardBack.classList.remove('is-hidden');
+  window.print();
+  toggleSide(getActiveSide(), elements);
+});
+
+document.getElementById('exportCard').addEventListener('click', async () => {
+  const currentSide = getActiveSide();
+  toggleSide('front', elements);
+  await exportAsPng(elements.cardFront, 'business-card-front.png');
+  toggleSide('back', elements);
+  await exportAsPng(elements.cardBack, 'business-card-back.png');
+  toggleSide(currentSide, elements);
+});
+
+function paint() {
+  renderCard(state, elements);
+  renderQr(elements.qrContainer, state.qrValue || state.website || 'https://example.com', state.brandPrimary);
+  saveState(state);
+}
+
+function hydrateForm(values) {
+  Object.entries(values).forEach(([key, value]) => {
+    if (!(key in form.elements)) return;
+    form.elements[key].value = value;
   });
-
-  dom.preview.frontToggle.addEventListener('click', () => patchState({ side: 'front' }));
-  dom.preview.backToggle.addEventListener('click', () => patchState({ side: 'back' }));
-
-  [dom.actions.sample, dom.actions.sampleAlt].forEach((btn) => btn?.addEventListener('click', applySampleData));
-  [dom.actions.reset, dom.actions.resetAlt].forEach((btn) => btn?.addEventListener('click', resetAll));
-  [dom.actions.export, dom.actions.exportAlt].forEach((btn) => btn?.addEventListener('click', () => exportPreviewAsPng(dom)));
-  [dom.actions.print, dom.actions.printAlt].forEach((btn) => btn?.addEventListener('click', () => printPreview(dom)));
 }
 
-function onFormInput(event) {
-  const target = event.target;
-  if (!(target instanceof HTMLInputElement || target instanceof HTMLSelectElement || target instanceof HTMLTextAreaElement)) {
-    return;
-  }
-
-  if (target.type === 'file') return;
-
-  const { valid, message } = validateField(target.name, target.value);
-  setFieldError(target, message);
-
-  if (!valid && target.value.trim() !== '') {
-    target.reportValidity();
-  }
-
-  patchState({ [target.name]: target.value });
-}
-
-function applySampleData() {
-  patchState({ ...getState(), ...SAMPLE_DATA });
-}
-
-function resetAll() {
-  clearStoredState();
-  resetState();
-  patchState({ ...DEFAULT_STATE, logoData: '', profileData: '' });
-  dom.inputs.logoUpload.value = '';
-  dom.inputs.profileUpload.value = '';
+function getActiveSide() {
+  const active = document.querySelector('.preview-toggle.active');
+  return active?.dataset.side || 'front';
 }

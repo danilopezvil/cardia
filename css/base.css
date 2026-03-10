@@ -1,3 +1,4 @@
+<<<<<<< codex/create-premium-business-card-generator-app-3beh8u
 html {
   font-size: 16px;
 }
@@ -15,10 +16,25 @@ a {
 :focus-visible {
   outline: 2px solid color-mix(in srgb, var(--color-primary), white 48%);
   outline-offset: 2px;
+=======
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: radial-gradient(circle at top left, #ffffff, var(--bg) 50%);
+>>>>>>> main
 }
 
 h1,
 h2,
+<<<<<<< codex/create-premium-business-card-generator-app-3beh8u
 h3 {
   line-height: 1.15;
   letter-spacing: -0.02em;
@@ -64,11 +80,32 @@ label {
   color: var(--color-text-muted);
   font-weight: 600;
   margin-bottom: var(--space-2);
+=======
+h3,
+legend {
+  margin: 0;
+}
+
+input,
+select,
+textarea,
+button {
+  font: inherit;
+}
+
+label {
+  display: grid;
+  gap: 0.4rem;
+  font-size: 0.84rem;
+  color: var(--ink-soft);
+  font-weight: 600;
+>>>>>>> main
 }
 
 input,
 select,
 textarea {
+<<<<<<< codex/create-premium-business-card-generator-app-3beh8u
   width: 100%;
   margin-top: var(--space-1);
   border: 1px solid var(--color-line);
@@ -82,11 +119,40 @@ input:hover,
 select:hover,
 textarea:hover {
   border-color: var(--color-line-strong);
+=======
+  border: 1px solid var(--line);
+  background: #fff;
+  padding: 0.7rem 0.82rem;
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+>>>>>>> main
 }
 
 input:focus,
 select:focus,
+<<<<<<< codex/create-premium-business-card-generator-app-3beh8u
 textarea:focus {
   border-color: color-mix(in srgb, var(--color-primary), white 30%);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary), white 86%);
+=======
+textarea:focus,
+button:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--brand-primary), white 65%);
+  outline-offset: 2px;
+}
+
+fieldset {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  margin: 0 0 1rem;
+  padding: 1rem;
+  background: var(--surface-muted);
+}
+
+legend {
+  padding: 0 0.35rem;
+  font-size: 0.9rem;
+  color: var(--ink);
+  font-weight: 700;
+>>>>>>> main
 }
