@@ -1,0 +1,102 @@
+.business-card {
+  background: #fff;
+  font-family: var(--font-body);
+}
+
+.business-card.template-executive-corporate {
+  background: linear-gradient(120deg, #ffffff 0 58%, color-mix(in srgb, var(--brand-primary), #f8fafc 72%));
+}
+.business-card.template-executive-corporate .overlay {
+  background: linear-gradient(90deg, transparent 0 66%, color-mix(in srgb, var(--brand-accent), transparent 70%));
+}
+
+.business-card.template-editorial-minimal {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+}
+.business-card.template-editorial-minimal .overlay {
+  background: linear-gradient(180deg, transparent 75%, color-mix(in srgb, var(--brand-primary), transparent 92%));
+}
+
+.business-card.template-modern-creative {
+  background: linear-gradient(160deg, #fff 0 50%, color-mix(in srgb, var(--brand-accent), #fff 72%));
+}
+.business-card.template-modern-creative .overlay {
+  background: radial-gradient(circle at 85% 20%, color-mix(in srgb, var(--brand-primary), transparent 82%), transparent 52%);
+}
+
+.business-card.template-tech-professional {
+  background: linear-gradient(130deg, #f8fbff, #dce8f5);
+}
+.business-card.template-tech-professional .overlay {
+  background-image: linear-gradient(color-mix(in srgb, var(--brand-primary), transparent 88%) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--brand-primary), transparent 90%) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+.business-card.template-health-wellness {
+  background: linear-gradient(180deg, #ffffff, color-mix(in srgb, var(--brand-accent), #f5fbf7 88%));
+}
+.business-card.template-health-wellness .overlay {
+  background: radial-gradient(circle at 0% 100%, color-mix(in srgb, var(--brand-primary), transparent 86%), transparent 45%);
+}
+
+.business-card.template-prestige-dark {
+  background: linear-gradient(130deg, #0b1324, #1e293b);
+  color: #f8fafc;
+}
+.business-card.template-prestige-dark .overlay {
+  background: linear-gradient(125deg, transparent 10%, color-mix(in srgb, var(--brand-accent), transparent 78%) 100%);
+}
+
+.business-card.template-forensic-psychology {
+  background: linear-gradient(135deg, #f8fafc 0 62%, #edf2f7);
+}
+.business-card.template-forensic-psychology .overlay {
+  background: linear-gradient(90deg, transparent 0 64%, color-mix(in srgb, var(--brand-primary), transparent 84%));
+}
+
+.business-card.template-software-architect {
+  background: linear-gradient(140deg, #0f172a 0 56%, #111827);
+  color: #e5e7eb;
+}
+.business-card.template-software-architect .overlay {
+  background-image: linear-gradient(color-mix(in srgb, var(--brand-accent), transparent 84%) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--brand-accent), transparent 90%) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.business-card.template-legal-institutional {
+  background: linear-gradient(130deg, #fcfcfb, #eef2f4);
+}
+.business-card.template-legal-institutional .overlay {
+  background: linear-gradient(160deg, color-mix(in srgb, var(--brand-primary), transparent 90%), transparent 46%);
+}
+
+.business-card.type-inter {
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-display: 'Source Serif 4', Georgia, serif;
+}
+.business-card.type-manrope {
+  --font-body: 'Manrope', system-ui, sans-serif;
+  --font-display: 'Playfair Display', Georgia, serif;
+}
+.business-card.type-plex {
+  --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-display: 'Source Serif 4', Georgia, serif;
+}
+.business-card.type-space {
+  --font-body: 'Space Grotesk', system-ui, sans-serif;
+  --font-display: 'Public Sans', system-ui, sans-serif;
+}
+.business-card.type-sora {
+  --font-body: 'Sora', system-ui, sans-serif;
+  --font-display: 'Inter', system-ui, sans-serif;
+}
+
+.business-card .company,
+.business-card .name,
+.business-card h2 {
+  font-family: var(--font-display);
+  letter-spacing: 0.01em;
+}

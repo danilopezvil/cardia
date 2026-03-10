@@ -1,0 +1,107 @@
+.studio-header {
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding: var(--space-8) var(--space-8) var(--space-5);
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--space-6);
+}
+
+.studio-brand p {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: var(--text-xs);
+  margin-bottom: var(--space-2);
+}
+
+.studio-shell {
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding: 0 var(--space-8) var(--space-8);
+  display: grid;
+  grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
+  gap: var(--space-8);
+}
+
+.editor-sidebar,
+.preview-workspace {
+  background: var(--color-surface);
+  border: 1px solid color-mix(in srgb, var(--color-line), white 22%);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+}
+
+.editor-sidebar {
+  padding: var(--space-5);
+  max-height: calc(100vh - 6rem);
+  overflow: auto;
+}
+
+#card-editor-form {
+  display: grid;
+  gap: var(--space-6);
+}
+
+#card-editor-form section {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.preview-workspace {
+  padding: var(--space-6);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: var(--space-6);
+}
+
+.preview-header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: var(--space-6);
+}
+
+.preview-header p {
+  color: var(--color-text-muted);
+  margin-top: var(--space-2);
+}
+
+.preview-canvas {
+  background: var(--color-bg-soft);
+  border: 1px dashed var(--color-line-strong);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  display: grid;
+  gap: var(--space-5);
+  align-content: start;
+}
+
+.business-card-preview {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.card-frame {
+  width: var(--card-preview-w);
+  min-height: 13rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+  display: grid;
+  gap: var(--space-4);
+}
+
+@media (max-width: 1100px) {
+  .studio-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .editor-sidebar {
+    max-height: none;
+  }
+}

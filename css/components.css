@@ -1,0 +1,88 @@
+.studio-actions,
+.preview-toggle,
+.workspace-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+button {
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 0.58rem 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: background-color var(--ease-standard), border-color var(--ease-standard), color var(--ease-standard),
+    transform var(--ease-standard);
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+.studio-actions button,
+.workspace-actions button,
+.preview-toggle button {
+  background: var(--color-surface);
+  border-color: var(--color-line-strong);
+  color: var(--color-text);
+}
+
+.studio-actions button:nth-child(3),
+.studio-actions button:nth-child(4),
+.workspace-actions button:nth-child(3),
+.workspace-actions button:nth-child(4) {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-primary-ink);
+}
+
+.preview-toggle button[aria-pressed='true'] {
+  background: color-mix(in srgb, var(--color-primary), white 8%);
+  border-color: color-mix(in srgb, var(--color-primary), white 20%);
+  color: var(--color-primary-ink);
+}
+
+.card-frame > header,
+.card-frame > section,
+.card-frame > footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.card-frame figure {
+  display: grid;
+  gap: var(--space-2);
+  justify-items: center;
+}
+
+.card-frame img {
+  width: 3rem;
+  aspect-ratio: 1;
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--color-line-strong);
+  background: var(--color-bg-soft);
+}
+
+.card-frame figcaption {
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+}
+
+.card-frame p {
+  color: var(--color-text-muted);
+}
+
+.card-frame > section > div {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.workspace-actions {
+  justify-content: flex-end;
+  border-top: 1px solid var(--color-line);
+  padding-top: var(--space-4);
+}

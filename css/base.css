@@ -1,0 +1,92 @@
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  background: radial-gradient(1200px 700px at -5% -20%, #ffffff, var(--color-bg));
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--color-primary), white 48%);
+  outline-offset: 2px;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+h1 {
+  font-family: var(--font-display);
+  font-size: clamp(var(--text-2xl), 2vw + 1rem, var(--text-3xl));
+}
+
+h2 {
+  font-size: var(--text-lg);
+}
+
+h3 {
+  font-size: var(--text-md);
+}
+
+p,
+label,
+input,
+select,
+button,
+legend {
+  font-size: var(--text-sm);
+}
+
+fieldset {
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  background: var(--color-surface-2);
+}
+
+legend {
+  padding-inline: var(--space-2);
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+label {
+  display: block;
+  color: var(--color-text-muted);
+  font-weight: 600;
+  margin-bottom: var(--space-2);
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  margin-top: var(--space-1);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  padding: 0.7rem 0.85rem;
+  background: var(--color-surface);
+  transition: border-color var(--ease-standard), box-shadow var(--ease-standard);
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+  border-color: var(--color-line-strong);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: color-mix(in srgb, var(--color-primary), white 30%);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary), white 86%);
+}

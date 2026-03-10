@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cardia Studio — Premium Business Card Generator</title>
+    <meta
+      name="description"
+      content="Semantic HTML structure for a premium business card generator with front/back previews, template controls, and export actions."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+  </head>
+  <body>
+    <header class="studio-header" role="banner">
+      <div class="studio-brand">
+        <p>Cardia Studio</p>
+        <h1>Premium Business Card Generator</h1>
+      </div>
+
+      <nav class="studio-actions" aria-label="Global actions">
+        <button id="sampleDataTop" type="button">Apply Sample Data</button>
+        <button id="resetTop" type="button">Reset</button>
+        <button id="exportTop" type="button">Export</button>
+        <button id="printTop" type="button">Print</button>
+      </nav>
+    </header>
+
+    <main class="studio-shell" id="app">
+      <aside class="editor-sidebar" aria-label="Business card editor">
+        <form id="card-editor-form" novalidate>
+          <section aria-labelledby="identity-heading">
+            <h2 id="identity-heading">Professional Identity</h2>
+            <fieldset>
+              <legend>Primary Details</legend>
+              <label for="fullName">Full name</label>
+              <input id="fullName" name="fullName" type="text" placeholder="Dr. Amelia Reyes" />
+
+              <label for="jobTitle">Title</label>
+              <input id="jobTitle" name="jobTitle" type="text" placeholder="Forensic Psychologist" />
+
+              <label for="company">Company / Practice</label>
+              <input id="company" name="company" type="text" placeholder="Northbridge Behavioral Lab" />
+
+              <label for="credential">Credential / Specialty</label>
+              <input id="credential" name="credential" type="text" placeholder="PsyD, ABPP Forensic" />
+            </fieldset>
+          </section>
+
+          <section aria-labelledby="contact-heading">
+            <h2 id="contact-heading">Contact</h2>
+            <fieldset>
+              <legend>Communication Channels</legend>
+              <label for="phone">Phone</label>
+              <input id="phone" name="phone" type="tel" placeholder="+1 (202) 555-0147" />
+
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="name@domain.com" />
+
+              <label for="website">Website</label>
+              <input id="website" name="website" type="url" placeholder="https://domain.com" />
+
+              <label for="address">Address</label>
+              <input id="address" name="address" type="text" placeholder="420 Madison Ave, New York" />
+            </fieldset>
+          </section>
+
+          <section aria-labelledby="template-heading">
+            <h2 id="template-heading">Design System</h2>
+            <fieldset>
+              <legend>Template Selector</legend>
+              <label for="template">Premium template</label>
+              <select id="template" name="template">
+                <option value="executive-corporate">Executive Corporate</option>
+                <option value="editorial-minimal">Editorial Minimal</option>
+                <option value="modern-creative">Modern Creative</option>
+                <option value="tech-professional">Tech Professional</option>
+                <option value="health-and-wellness">Health and Wellness</option>
+                <option value="prestige-dark">Prestige Dark</option>
+                <option value="forensic-psychology">Forensic Psychology Professional</option>
+                <option value="senior-software-architect">Senior Software Architect</option>
+                <option value="legal-institutional">Legal and Institutional</option>
+              </select>
+
+              <label for="typography">Typography profile</label>
+              <select id="typography" name="typography">
+                <option value="inter-serif">Inter + Source Serif</option>
+                <option value="manrope-playfair">Manrope + Playfair Display</option>
+                <option value="plex-serif">IBM Plex Sans + Source Serif</option>
+                <option value="space-public">Space Grotesk + Public Sans</option>
+                <option value="sora-inter">Sora + Inter</option>
+              </select>
+            </fieldset>
+
+            <fieldset>
+              <legend>Color Controls</legend>
+              <label for="brandPrimary">Brand primary</label>
+              <input id="brandPrimary" name="brandPrimary" type="color" value="#14213d" />
+
+              <label for="brandAccent">Brand accent</label>
+              <input id="brandAccent" name="brandAccent" type="color" value="#d4a373" />
+
+              <label for="surfaceTone">Surface tone</label>
+              <input id="surfaceTone" name="surfaceTone" type="color" value="#f8fafc" />
+            </fieldset>
+          </section>
+
+          <section aria-labelledby="media-heading">
+            <h2 id="media-heading">Media & QR</h2>
+            <fieldset>
+              <legend>Image Uploads</legend>
+              <label for="logoUpload">Logo upload</label>
+              <input id="logoUpload" name="logoUpload" type="file" accept="image/*" />
+
+              <label for="profileUpload">Profile image upload (optional)</label>
+              <input id="profileUpload" name="profileUpload" type="file" accept="image/*" />
+            </fieldset>
+
+            <fieldset>
+              <legend>QR Controls</legend>
+              <label for="qrValue">QR target URL</label>
+              <input id="qrValue" name="qrValue" type="url" placeholder="https://cal.com/amelia-reyes" />
+
+              <label for="qrPlacement">QR placement</label>
+              <select id="qrPlacement" name="qrPlacement">
+                <option value="back">Back side</option>
+                <option value="front">Front side</option>
+                <option value="hidden">Hide QR</option>
+              </select>
+
+              <label for="backMessage">Back message</label>
+              <textarea id="backMessage" name="backMessage" rows="3" placeholder="Confidential consultations by appointment."></textarea>
+            </fieldset>
+          </section>
+        </form>
+      </aside>
+
+      <section class="preview-workspace" aria-label="Live preview workspace">
+        <header class="preview-header">
+          <div>
+            <h2>Card Preview</h2>
+            <p>Front and back composition with production-ready proportions.</p>
+          </div>
+
+          <div class="preview-toggle" role="group" aria-label="Card side toggle">
+            <button id="frontSideBtn" type="button" aria-pressed="true">Front</button>
+            <button id="backSideBtn" type="button" aria-pressed="false">Back</button>
+          </div>
+        </header>
+
+        <section class="preview-canvas" aria-label="Business card preview stage" id="previewStage">
+          <article class="business-card-preview" id="card-front-panel" aria-labelledby="card-front-title">
+            <h3 id="card-front-title">Front Side</h3>
+            <div class="card-frame" id="card-front-surface" role="img" aria-label="Front side business card preview surface">
+              <header>
+                <figure>
+                  <img id="preview-logo" src="" alt="Uploaded logo preview" />
+                  <figcaption>Logo area</figcaption>
+                </figure>
+                <p id="preview-company">Company name placeholder</p>
+              </header>
+
+              <section>
+                <figure>
+                  <img id="preview-profile" src="" alt="Optional profile image preview" />
+                  <figcaption>Profile image area</figcaption>
+                </figure>
+                <div>
+                  <p id="preview-name">Full name placeholder</p>
+                  <p id="preview-title">Title placeholder</p>
+                  <p id="preview-credential">Credential placeholder</p>
+                </div>
+              </section>
+
+              <footer>
+                <p id="preview-phone">Phone placeholder</p>
+                <p id="preview-email">Email placeholder</p>
+                <p id="preview-website">Website placeholder</p>
+                <p id="preview-address">Address placeholder</p>
+              </footer>
+              <div id="preview-front-qr" aria-label="Front QR code"></div>
+            </div>
+          </article>
+
+          <article class="business-card-preview" id="card-back-panel" aria-labelledby="card-back-title">
+            <h3 id="card-back-title">Back Side</h3>
+            <div class="card-frame" id="card-back-surface" role="img" aria-label="Back side business card preview surface">
+              <header>
+                <p id="preview-back-company">Company placeholder</p>
+                <p id="preview-back-name">Name placeholder</p>
+              </header>
+
+              <section>
+                <p id="preview-back-message">Back message / notes placeholder</p>
+              </section>
+
+              <footer>
+                <section id="preview-back-qr" aria-label="QR code preview area">
+                  <p>QR code area</p>
+                </section>
+                <section aria-label="Profile links and references">
+                  <p id="preview-back-profile-link">Profile URL placeholder</p>
+                  <p id="preview-back-website">Website placeholder</p>
+                </section>
+              </footer>
+            </div>
+          </article>
+        </section>
+
+        <footer class="workspace-actions" aria-label="Preview actions">
+          <button id="sampleDataBottom" type="button">Apply Sample Data</button>
+          <button id="resetBottom" type="button">Reset</button>
+          <button id="exportBottom" type="button">Export</button>
+          <button id="printBottom" type="button">Print</button>
+        </footer>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>
