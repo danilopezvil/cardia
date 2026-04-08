@@ -132,6 +132,7 @@ ul {
   display: grid;
   place-items: center;
   gap: var(--space-3);
+  text-align: center;
 }
 
 .business-card--midnight.business-card--front {
@@ -153,6 +154,12 @@ ul {
   color: #0f1630;
 }
 
+.business-card--light .business-card__qrvalue,
+.business-card--light .qr-placeholder {
+  color: #1a1f31;
+  border-color: #3f4e82;
+}
+
 .business-card--ocean.business-card--front {
   background: linear-gradient(130deg, #e8fffd, #d2f0ff);
   color: #08233b;
@@ -160,6 +167,13 @@ ul {
 
 .business-card--ocean.business-card--back {
   background: linear-gradient(165deg, #00364e, #012839);
+}
+
+.business-card__kicker {
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.78;
 }
 
 .business-card__name {
@@ -200,6 +214,32 @@ ul {
   margin-top: var(--space-3);
   color: var(--color-danger);
   font-size: var(--font-size-sm);
+}
+
+.business-card--template-corporate.business-card--front {
+  border-left: 4px solid #5a6ee5;
+}
+
+.business-card--template-minimal.business-card--front {
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 8%), var(--shadow-md);
+}
+
+.business-card--template-creative.business-card--front {
+  background-image: radial-gradient(circle at 10% 10%, rgb(128 96 255 / 20%), transparent 30%),
+    linear-gradient(130deg, #ffffff, #e7ecff);
+}
+
+.business-card--template-health.business-card--front {
+  background: linear-gradient(130deg, #eefcff, #dcfbef);
+}
+
+.business-card--template-legal.business-card--front {
+  background: linear-gradient(130deg, #fcf7ea, #efe3c5);
+  color: #2e2615;
+}
+
+.business-card--template-tech.business-card--front {
+  background: linear-gradient(130deg, #ebf1ff, #dbe2ff);
 }
 
 :focus-visible {
