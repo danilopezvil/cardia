@@ -1,0 +1,214 @@
+:root {
+  color-scheme: dark;
+
+  --color-bg-canvas: #090b12;
+  --color-bg-surface: #111522;
+  --color-bg-elevated: #161b2d;
+  --color-bg-card: #f7f8ff;
+
+  --color-fg-primary: #ecf0ff;
+  --color-fg-secondary: #bdc7eb;
+  --color-fg-muted: #94a1c8;
+  --color-fg-strong: #0e1120;
+
+  --color-brand-primary: #8060ff;
+  --color-brand-secondary: #00c8ff;
+  --color-border-subtle: #28304b;
+  --color-focus: #57b6ff;
+  --color-danger: #ff7171;
+
+  --font-family-sans: Inter, Avenir, Montserrat, 'Segoe UI', sans-serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 2rem;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-8: 3rem;
+
+  --radius-sm: 0.5rem;
+  --radius-md: 0.85rem;
+  --radius-lg: 1.25rem;
+
+  --shadow-sm: 0 2px 10px rgb(0 0 0 / 25%);
+  --shadow-md: 0 8px 24px rgb(0 0 0 / 35%);
+
+  font-family: var(--font-family-sans);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--color-bg-canvas);
+}
+
+h1,
+h2,
+p,
+ul {
+  margin: 0;
+}
+
+.surface {
+  background: linear-gradient(180deg, rgb(255 255 255 / 2%), transparent), var(--color-bg-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+}
+
+.surface__title {
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--space-3);
+}
+
+.surface__text {
+  color: var(--color-fg-secondary);
+  margin-bottom: var(--space-4);
+}
+
+.editor-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.editor-field {
+  display: grid;
+  gap: var(--space-1);
+  color: var(--color-fg-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.editor-field input,
+.editor-field select {
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-subtle);
+  background: var(--color-bg-elevated);
+  color: var(--color-fg-primary);
+  min-height: 2.25rem;
+  padding: 0 var(--space-2);
+}
+
+.editor-field small {
+  color: var(--color-danger);
+}
+
+.card-preview-grid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+}
+
+.card-preview-grid--portrait .business-card {
+  aspect-ratio: 1 / 1.45;
+}
+
+.business-card {
+  aspect-ratio: 1.75 / 1;
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-md);
+}
+
+.business-card--front {
+  display: grid;
+  align-content: center;
+  gap: var(--space-2);
+}
+
+.business-card--back {
+  border: 1px solid #2f3a5c;
+  display: grid;
+  place-items: center;
+  gap: var(--space-3);
+}
+
+.business-card--midnight.business-card--front {
+  background: linear-gradient(130deg, #ffffff, #e7ecff);
+  color: var(--color-fg-strong);
+}
+
+.business-card--midnight.business-card--back {
+  background: linear-gradient(165deg, #171c2f, #111522);
+}
+
+.business-card--light.business-card--front {
+  background: linear-gradient(130deg, #ffffff, #f7f8ff);
+  color: #1a1f31;
+}
+
+.business-card--light.business-card--back {
+  background: linear-gradient(165deg, #dde3ff, #cad6ff);
+  color: #0f1630;
+}
+
+.business-card--ocean.business-card--front {
+  background: linear-gradient(130deg, #e8fffd, #d2f0ff);
+  color: #08233b;
+}
+
+.business-card--ocean.business-card--back {
+  background: linear-gradient(165deg, #00364e, #012839);
+}
+
+.business-card__name {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.business-card__role {
+  font-size: var(--font-size-md);
+}
+
+.business-card__company,
+.business-card__contact,
+.business-card__hint {
+  font-size: var(--font-size-sm);
+  opacity: 0.9;
+}
+
+.business-card__qrvalue {
+  max-width: 90%;
+  color: #d6ddf7;
+  font-size: 0.65rem;
+  text-align: center;
+}
+
+.qr-placeholder {
+  width: 7rem;
+  aspect-ratio: 1;
+  border-radius: var(--radius-sm);
+  border: 2px dashed #8f9ec8;
+  display: grid;
+  place-items: center;
+  color: #d6ddf7;
+  letter-spacing: 0.08em;
+}
+
+.preview-error {
+  margin-top: var(--space-3);
+  color: var(--color-danger);
+  font-size: var(--font-size-sm);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+@media (max-width: 720px) {
+  .editor-form {
+    grid-template-columns: 1fr;
+  }
+}
