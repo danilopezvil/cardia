@@ -243,6 +243,17 @@ ul {
   letter-spacing: 0.08em;
 }
 
+
+.editor-field input[aria-invalid='true'] {
+  border-color: #ff9898;
+}
+
+.preview-success {
+  margin-top: var(--space-3);
+  color: #8ef0b2;
+  font-size: var(--font-size-sm);
+}
+
 .preview-error {
   margin-top: var(--space-3);
   color: var(--color-danger);

@@ -1,3 +1,19 @@
+
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 16px;
+  background: #ffffff;
+  color: #111827;
+  padding: 8px 12px;
+  border-radius: 8px;
+  z-index: 1000;
+}
+
+.skip-link:focus {
+  top: 16px;
+}
+
 .app-shell {
   min-height: 100vh;
   color: var(--color-fg-primary);

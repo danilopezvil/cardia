@@ -6,8 +6,8 @@ export function PreviewPanel() {
   const isPortrait = document.style.orientation === 'portrait';
 
   return (
-    <section className="surface" aria-labelledby="preview-panel-title">
-      <h2 id="preview-panel-title" className="surface__title">
+    <section className="surface" aria-labelledby="preview-panel-title" role="region">
+      <h2 id="preview-panel-title" className="surface__title" tabIndex={-1}>
         Live Preview
       </h2>
       <p className="surface__text">
