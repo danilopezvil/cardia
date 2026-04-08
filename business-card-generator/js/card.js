@@ -10,11 +10,11 @@ const ZINE_BADGES = {
 };
 
 const TEMPLATE_DEFAULTS = {
-  tech:      { bg: '#0f172a', accent: '#38bdf8' },
-  finance:   { bg: '#0d2b1a', accent: '#4ade80' },
-  legal:     { bg: '#1c1408', accent: '#d4a017' },
-  creative:  { bg: '#0f0a1e', accent: '#a855f7' },
-  health:    { bg: '#ffffff', accent: '#e11d48' },
+  tech:      { bg: '#f8fafc', accent: '#2563eb' },
+  finance:   { bg: '#f8fafc', accent: '#16a34a' },
+  legal:     { bg: '#fffaf0', accent: '#b45309' },
+  creative:  { bg: '#f8fafc', accent: '#7c3aed' },
+  health:    { bg: '#ffffff', accent: '#0f766e' },
   zine:      { bg: '#1a1a1a', accent: '#ff3b00' },
 };
 
@@ -23,19 +23,21 @@ const TEMPLATE_DEFAULTS = {
    ══════════════════════════════════════════════════════════ */
 
 const CardData = {
-  name: '', title: '', company: '', tagline: '',
+  name: '', role: '', organization: '', title: '', company: '', tagline: '',
   specialty: '', registration: '',
   phoneCountry: '+34', phone: '', email: '',
   website: '', linkedin: '', github: '', instagram: '',
   primaryColor: '',
   secondaryColor: '',
-  font: 'Space Grotesk',
-  template: 'tech',
+  font: 'Inter',
+  template: 'finance',
   orientation: 'horizontal',
   logo: null,
   industry: 'tech',
+  showQr: false,
   showQR: false,
   qrMode: 'vcard',
+  qrEcc: 'Q',
   digitalUrl: '',
 };
 
@@ -52,12 +54,13 @@ function _normalize(updates) {
   const o = {};
   for (const [k, v] of Object.entries(updates)) {
     switch (k) {
-      case 'role':           o.title          = v; break;
+      case 'role':           o.role           = v; o.title = v; break;
       case 'colorPrimary':   o.primaryColor   = v; break;
       case 'colorSecondary': o.secondaryColor = v; break;
       case 'fontFamily':     o.font           = v; break;
       case 'logoSrc':        o.logo           = v; break;
-      case 'showQr':         o.showQR         = v; break;
+      case 'organization':   o.organization   = v; o.company = v; break;
+      case 'showQr':         o.showQr         = v; o.showQR = v; break;
       case 'template':
         o.template = TEMPLATE_ALIAS[v] || v;
         break;
@@ -79,6 +82,13 @@ function _e(s) {
 
 function _fmtUrl(u) {
   return (u || '').replace(/^https?:\/\//,'').replace(/\/$/,'');
+}
+
+function _canonicalData(data) {
+  const role = data.role || data.title || '';
+  const organization = data.organization || data.company || '';
+  const showQr = Boolean(data.showQr ?? data.showQR);
+  return { ...data, role, title: role, organization, company: organization, showQr, showQR: showQr };
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -221,7 +231,7 @@ const renderFront = {
     const badge = ZINE_BADGES[data.industry] || 'DEV';
     const titleWord = (data.title || '').trim().split(/\s+/)[0].toUpperCase().slice(0,6);
     const contacts = _buildContacts(data);
-    const qrHtml = data.showQR ? `
+    const qrHtml = data.showQr ? `
       <div class="qr-area">
         <div class="qr-frame-outer"><div class="qr-frame"><div id="qr-front"></div></div></div>
         <div class="qr-wrapper"><span class="qr-label">scan</span></div>
@@ -245,7 +255,7 @@ const renderFront = {
 
   finance(front, data) {
     const contacts = _buildContacts(data);
-    const qrHtml = data.showQR ? `
+    const qrHtml = data.showQr ? `
       <div class="qr-area">
         <div class="qr-frame-outer"><div class="qr-frame"><div id="qr-front"></div></div></div>
         <div class="qr-wrapper"><span class="qr-label">scan</span></div>
@@ -265,7 +275,7 @@ const renderFront = {
 
   legal(front, data) {
     const contacts = _buildContacts(data);
-    const qrHtml = data.showQR ? `
+    const qrHtml = data.showQr ? `
       <div class="qr-area">
         <div class="qr-frame-outer"><div class="qr-frame"><div id="qr-front"></div></div></div>
         <div class="qr-wrapper"><span class="qr-label">scan</span></div>
@@ -286,7 +296,7 @@ const renderFront = {
 
   creative(front, data) {
     const contacts = _buildContacts(data);
-    const qrHtml = data.showQR ? `
+    const qrHtml = data.showQr ? `
       <div class="qr-area">
         <div class="qr-frame-outer"><div class="qr-frame"><div id="qr-front"></div></div></div>
         <div class="qr-wrapper"><span class="qr-label">scan</span></div>
@@ -306,7 +316,7 @@ const renderFront = {
 
   health(front, data) {
     const contacts = _buildContacts(data);
-    const qrHtml = data.showQR ? `
+    const qrHtml = data.showQr ? `
       <div class="qr-area">
         <div class="qr-frame-outer"><div class="qr-frame"><div id="qr-front"></div></div></div>
         <div class="qr-wrapper"><span class="qr-label">scan</span></div>
@@ -330,7 +340,7 @@ const renderFront = {
     const badge = ZINE_BADGES[data.industry] || 'DEV';
     const roleWord = (data.title || '').trim().split(/\s+/)[0].toUpperCase().slice(0,6);
     const contacts = _buildZineContacts(data);
-    const qrHtml = data.showQR ? `
+    const qrHtml = data.showQr ? `
       <div class="qr-area" style="position:absolute;bottom:0;right:0;">
         <div class="qr-frame-outer"><div class="qr-frame"><div id="qr-front"></div></div></div>
       </div>` : '';
@@ -361,21 +371,21 @@ const renderFront = {
 /* ── Helpers de contacto ── */
 function _buildContacts(data) {
   const lines = [];
-  if (data.phone)    lines.push(`${data.phoneCountry||''} ${data.phone}`.trim());
-  if (data.email)    lines.push(data.email);
-  if (data.website)  lines.push(_fmtUrl(data.website));
-  if (data.linkedin) lines.push(`in/${data.linkedin}`);
-  if (data.github)   lines.push(data.github);
-  return lines.slice(0,4).map(l => `<div class="card-ci">${_e(l)}</div>`).join('');
+  if (data.phone)    lines.push({ icon: '☎', value: `${data.phoneCountry||''} ${data.phone}`.trim() });
+  if (data.email)    lines.push({ icon: '✉', value: data.email });
+  if (data.website)  lines.push({ icon: '◉', value: _fmtUrl(data.website) });
+  if (data.linkedin) lines.push({ icon: 'in', value: `linkedin.com/in/${data.linkedin}` });
+  if (data.github)   lines.push({ icon: 'gh', value: `github.com/${data.github}` });
+  return lines.slice(0,4).map(l => `<div class="card-ci"><span class="card-ci-icon">${_e(l.icon)}</span><span>${_e(l.value)}</span></div>`).join('');
 }
 
 function _buildZineContacts(data) {
   const lines = [];
-  if (data.phone)    lines.push(`${data.phoneCountry||''} ${data.phone}`.trim());
-  if (data.email)    lines.push(data.email);
-  if (data.website)  lines.push(_fmtUrl(data.website));
-  if (data.linkedin) lines.push(`in/${data.linkedin}`);
-  return lines.slice(0,4).map(l => `<div class="card-ci">${_e(l)}</div>`).join('');
+  if (data.phone)    lines.push({ icon: '☎', value: `${data.phoneCountry||''} ${data.phone}`.trim() });
+  if (data.email)    lines.push({ icon: '✉', value: data.email });
+  if (data.website)  lines.push({ icon: '◉', value: _fmtUrl(data.website) });
+  if (data.linkedin) lines.push({ icon: 'in', value: `linkedin.com/in/${data.linkedin}` });
+  return lines.slice(0,4).map(l => `<div class="card-ci"><span class="card-ci-icon">${_e(l.icon)}</span><span>${_e(l.value)}</span></div>`).join('');
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -383,15 +393,15 @@ function _buildZineContacts(data) {
    ══════════════════════════════════════════════════════════ */
 
 function renderBack(back, data) {
-  const wordmark = data.company || data.name || '';
+  const wordmark = data.organization || data.company || data.name || '';
   back.querySelector('.card-content-layer').innerHTML = `
-    <div class="card-back-content">
-      <div>
+    <div class="card-back-content card-back-content--qr-first">
+      <div class="back-header">
         <div class="back-wordmark">${_e(wordmark.toUpperCase())}</div>
         ${data.tagline ? `<div class="back-tagline">${_e(data.tagline)}</div>` : ''}
       </div>
-      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;flex:1;justify-content:center;">
-        <div class="back-scan-hint">— escanear para guardar contacto —</div>
+      <div class="back-qr-stack">
+        <div class="back-scan-hint">Escanea para guardar contacto</div>
         <div class="qr-frame-outer">
           <div class="qr-frame">
             <div id="qr-back"></div>
@@ -407,6 +417,7 @@ function renderBack(back, data) {
    ══════════════════════════════════════════════════════════ */
 
 function renderCard(data) {
+  data = _canonicalData(data);
   const preview = document.getElementById('card-preview');
   if (!preview) return;
 
@@ -433,6 +444,8 @@ function renderCard(data) {
   /* 4. Fondo temático */
   drawThemeBackground(front, tpl, data);
   drawThemeBackground(back,  tpl, data);
+  window.BrandingModule?.applyBrandingOverlay(front, data);
+  window.BrandingModule?.applyBrandingOverlay(back, data);
 
   /* 5. Renderizar anverso */
   const frontFn = renderFront[tpl] || renderFront.tech;
@@ -442,7 +455,7 @@ function renderCard(data) {
   renderBack(back, data);
 
   /* 7. QR */
-  if (data.showQR && typeof generateQR === 'function') {
+  if (data.showQr && typeof generateQR === 'function') {
     const qrFront = front.querySelector('#qr-front');
     if (qrFront) { qrFront.innerHTML = ''; generateQR(qrFront, data, 'front'); }
     const qrBack  = back.querySelector('#qr-back');
@@ -506,27 +519,27 @@ const CardModule = {
     /* Devolver con aliases legacy para app.js / localStorage */
     return {
       ...CardData,
-      role:           CardData.title,
+      role:           CardData.role || CardData.title,
       colorPrimary:   CardData.primaryColor,
       colorSecondary: CardData.secondaryColor,
       fontFamily:     CardData.font,
       logoSrc:        CardData.logo,
-      showQr:         CardData.showQR,
+      showQr:         CardData.showQr ?? CardData.showQR,
       qrDataUrl:      null,
     };
   },
 
   reset() {
     const defaults = {
-      name: '', title: '', company: '', tagline: '',
+      name: '', role: '', organization: '', title: '', company: '', tagline: '',
       specialty: '', registration: '',
       phoneCountry: '+34', phone: '', email: '',
       website: '', linkedin: '', github: '', instagram: '',
       primaryColor: '', secondaryColor: '',
-      font: 'Space Grotesk', template: 'tech',
+      font: 'Inter', template: 'finance',
       orientation: 'horizontal', logo: null,
-      industry: 'tech', showQR: false,
-      qrMode: 'vcard', digitalUrl: '',
+      industry: 'tech', showQr: false, showQR: false,
+      qrMode: 'vcard', qrEcc: 'Q', digitalUrl: '',
     };
     Object.assign(CardData, defaults);
     renderCard(CardData);

@@ -297,3 +297,99 @@
   transform-origin: center center;
   transform: scale(var(--card-scale, 1));
 }
+
+/* ── Data-first refresh (rediseño UI/UX) ── */
+.card-branding-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.1;
+  pointer-events: none;
+  color: var(--card-accent, #2563eb);
+}
+.card-branding-overlay svg { width: 100%; height: 100%; }
+
+.card-ci {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1.35;
+}
+.card-ci-icon {
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  font-size: 9px;
+  background: rgba(37, 99, 235, 0.12);
+  color: var(--card-accent, #2563eb);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.theme-tech,
+.theme-finance,
+.theme-creative {
+  color: #0f172a;
+  background: #ffffff;
+  font-family: 'Inter', 'Roboto', 'Open Sans', sans-serif;
+}
+.theme-tech .card-name,
+.theme-finance .card-name,
+.theme-creative .card-name,
+.theme-health .card-name {
+  font-size: clamp(20px, 3.4vw, 26px);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  font-weight: 800;
+  color: #0f172a;
+}
+.theme-tech .card-title,
+.theme-finance .card-title,
+.theme-creative .card-title,
+.theme-health .card-title,
+.theme-legal .card-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+.theme-tech .card-company,
+.theme-finance .card-company,
+.theme-creative .card-company,
+.theme-health .card-company,
+.theme-legal .card-company {
+  font-size: 10px;
+  color: #475569;
+}
+
+.card-back-content--qr-first {
+  justify-content: space-between;
+}
+.back-qr-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex: 1;
+}
+.back-scan-hint {
+  font-size: 9px;
+  opacity: 0.65;
+  letter-spacing: 0.06em;
+}
+
+.card-back #qr-back canvas,
+.card-back #qr-back img,
+.card-front #qr-front canvas,
+.card-front #qr-front img {
+  width: auto !important;
+  height: auto !important;
+  max-width: 70%;
+}
+.card-front #qr-front canvas,
+.card-front #qr-front img {
+  max-width: 92px;
+}
