@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Business Card Generator</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@300;400;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- CDN Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- App Styles -->
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/themes.css" />
+  <link rel="stylesheet" href="css/card.css" />
+</head>
+<body>
+
+<div class="app-wrapper">
+
+  <!-- ═══════════════════════════════════════════════════════════
+       HEADER
+       ═══════════════════════════════════════════════════════════ -->
+  <header class="app-header">
+    <div class="app-header__brand">
+      <span class="app-header__icon" aria-hidden="true">◈</span>
+      <h1 class="app-header__title">Business Card Generator</h1>
+    </div>
+    <nav class="app-header__actions" aria-label="Acciones de encabezado">
+      <button class="btn btn--ghost btn--sm" id="btn-color-scheme" type="button"
+        aria-label="Cambiar modo de color" title="Modo claro/oscuro">
+        <!-- Icono actualizado por app.js -->
+      </button>
+      <button class="btn btn--ghost btn--sm" id="btn-reset" type="button">Resetear</button>
+    </nav>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       LAYOUT: SIDEBAR (40%) + PREVIEW (60%)
+       ═══════════════════════════════════════════════════════════ -->
+  <main class="app-main">
+
+    <!-- ── SIDEBAR ────────────────────────────────────────────── -->
+    <aside class="sidebar" aria-label="Panel de edición">
+
+      <div class="sidebar__scrollable">
+        <form id="card-form" novalidate autocomplete="off">
+
+          <!-- ════════════════════════════════════════════════════
+               SELECTOR DE INDUSTRIA
+               ════════════════════════════════════════════════════ -->
+          <div class="industry-selector" role="group" aria-label="Sector profesional">
+            <div class="industry-chip" data-industry="tech">⌨ Tech</div>
+            <div class="industry-chip" data-industry="finance">₿ Finanzas</div>
+            <div class="industry-chip" data-industry="legal">⚖ Legal</div>
+            <div class="industry-chip" data-industry="creative">✦ Creativo</div>
+            <div class="industry-chip" data-industry="health">+ Salud</div>
+            <div class="industry-chip" data-industry="education">◎ Educación</div>
+          </div>
+
+          <!-- ════════════════════════════════════════════════════
+               SECCIÓN 1 — Información Personal
+               ════════════════════════════════════════════════════ -->
+          <details class="accordion" id="section-info" open>
+            <summary class="accordion__header">
+              <span class="accordion__title">
+                <svg class="accordion__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <circle cx="8" cy="5" r="2.5" stroke="currentColor" stroke-width="1.4"/>
+                  <path d="M2.5 13c0-3.038 2.462-5.5 5.5-5.5s5.5 2.462 5.5 5.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                </svg>
+                Información Personal
+              </span>
+              <svg class="accordion__chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true">
+                <path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </summary>
+            <div class="accordion__body">
+              <div class="accordion__content">
+
+                <div class="form-group" id="fg-name">
+                  <label class="form-label" for="input-name">
+                    Nombre completo
+                    <span class="form-required" aria-hidden="true">*</span>
+                  </label>
+                  <input class="form-input" type="text" id="input-name" name="name"
+                    placeholder="Ana García" autocomplete="name"
+                    required aria-describedby="err-name" />
+                  <span class="form-error" id="err-name" role="alert" aria-live="polite"></span>
+                </div>
+
+                <div class="form-group" id="fg-role">
+                  <label class="form-label" for="input-role">
+                    Cargo / Título profesional
+                    <span class="form-required" aria-hidden="true">*</span>
+                  </label>
+                  <input class="form-input" type="text" id="input-role" name="role"
+                    placeholder="Diseñadora UX Senior"
+                    required aria-describedby="err-role" />
+                  <span class="form-error" id="err-role" role="alert" aria-live="polite"></span>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="input-company">Empresa / Organización</label>
+                  <input class="form-input" type="text" id="input-company" name="company"
+                    placeholder="Acme Studio" />
+                </div>
+
+                <div class="form-group" id="fg-tagline">
+                  <div class="form-label-row">
+                    <label class="form-label" for="input-tagline">Tagline</label>
+                    <span class="char-counter" id="counter-tagline" aria-live="polite">
+                      <span id="counter-tagline-val">0</span>/60
+                    </span>
+                  </div>
+                  <input class="form-input" type="text" id="input-tagline" name="tagline"
+                    placeholder="Creando experiencias que importan"
+                    maxlength="60" aria-describedby="counter-tagline" />
+                </div>
+
+                <!-- ── Campos únicos por industria (ocultos por defecto) ── -->
+
+                <div class="form-group field-hidden" id="fg-specialty">
+                  <label class="form-label" for="input-specialty">Especialidad</label>
+                  <input class="form-input" type="text" id="input-specialty" name="specialty"
+                    placeholder="" />
+                </div>
+
+                <div class="form-group field-hidden" id="fg-registration">
+                  <label class="form-label" for="input-registration">Colegiatura / Registro</label>
+                  <input class="form-input" type="text" id="input-registration" name="registration"
+                    placeholder="" />
+                </div>
+
+                <div class="form-group field-hidden" id="fg-stack">
+                  <label class="form-label" for="input-stack">Stack tecnológico</label>
+                  <input class="form-input" type="text" id="input-stack" name="stack"
+                    placeholder="" />
+                </div>
+
+                <div class="form-group field-hidden" id="fg-certifications">
+                  <label class="form-label" for="input-certifications">Certificaciones</label>
+                  <input class="form-input" type="text" id="input-certifications" name="certifications"
+                    placeholder="" />
+                </div>
+
+                <div class="form-group field-hidden" id="fg-department">
+                  <label class="form-label" for="input-department">Facultad / Departamento</label>
+                  <input class="form-input" type="text" id="input-department" name="department"
+                    placeholder="" />
+                </div>
+
+                <div class="form-group field-hidden" id="fg-office-hours">
+                  <label class="form-label" for="input-office-hours">Horario de atención</label>
+                  <input class="form-input" type="text" id="input-office-hours" name="office_hours"
+                    placeholder="" />
+                </div>
+
+                <div class="form-group field-hidden" id="fg-scholar">
+                  <label class="form-label" for="input-scholar">Scholar / ORCID</label>
+                  <input class="form-input" type="text" id="input-scholar" name="scholar"
+                    placeholder="" />
+                </div>
+
+              </div>
+            </div>
+          </details>
+
+          <!-- ════════════════════════════════════════════════════
+               SECCIÓN 2 — Contacto
+               ════════════════════════════════════════════════════ -->
+          <details class="accordion" id="section-contact">
+            <summary class="accordion__header">
+              <span class="accordion__title">
+                <svg class="accordion__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <rect x="1.5" y="2.5" width="13" height="11" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
+                  <path d="M1.5 5.5l6.5 4.5 6.5-4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                </svg>
+                Contacto
+              </span>
+              <svg class="accordion__chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true">
+                <path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </summary>
+            <div class="accordion__body">
+              <div class="accordion__content">
+
+                <!-- Teléfono con selector de código de país -->
+                <div class="form-group" id="fg-phone">
+                  <label class="form-label" for="input-phone">Teléfono</label>
+                  <div class="phone-input-group">
+                    <select class="form-select phone-country" id="input-phone-country" aria-label="Código de país">
+                      <option value="+593">ec +593</option>
+                      <option value="+1">🇺🇸 +1</option>
+                      <option value="+44">🇬🇧 +44</option>
+                      <option value="+34" selected>🇪🇸 +34</option>
+                      <option value="+33">🇫🇷 +33</option>
+                      <option value="+49">🇩🇪 +49</option>
+                      <option value="+39">🇮🇹 +39</option>
+                      <option value="+351">🇵🇹 +351</option>
+                      <option value="+52">🇲🇽 +52</option>
+                      <option value="+54">🇦🇷 +54</option>
+                      <option value="+56">🇨🇱 +56</option>
+                      <option value="+57">🇨🇴 +57</option>
+                      <option value="+55">🇧🇷 +55</option>
+                      <option value="+61">🇦🇺 +61</option>
+                      <option value="+81">🇯🇵 +81</option>
+                      <option value="+82">🇰🇷 +82</option>
+                      <option value="+86">🇨🇳 +86</option>
+                      <option value="+91">🇮🇳 +91</option>
+                      <option value="+7">🇷🇺 +7</option>
+                      <option value="+27">🇿🇦 +27</option>
+                      <option value="+971">🇦🇪 +971</option>
+                    </select>
+                    <input class="form-input" type="tel" id="input-phone" name="phone"
+                      placeholder="600 000 000" autocomplete="tel-local" />
+                  </div>
+                </div>
+
+                <div class="form-group" id="fg-email">
+                  <label class="form-label" for="input-email">Email</label>
+                  <input class="form-input" type="email" id="input-email" name="email"
+                    placeholder="ana@acme.io" autocomplete="email"
+                    aria-describedby="err-email" />
+                  <span class="form-error" id="err-email" role="alert" aria-live="polite"></span>
+                </div>
+
+                <div class="form-group" id="fg-website">
+                  <label class="form-label" for="input-website">Sitio web</label>
+                  <input class="form-input" type="url" id="input-website" name="website"
+                    placeholder="https://acme.io"
+                    aria-describedby="err-website" />
+                  <span class="form-error" id="err-website" role="alert" aria-live="polite"></span>
+                </div>
+
+                <!-- LinkedIn — solo el slug, con prefijo visual -->
+                <div class="form-group">
+                  <label class="form-label" for="input-linkedin">LinkedIn</label>
+                  <div class="input-prefix-group">
+                    <span class="input-prefix">linkedin.com/in/</span>
+                    <input class="form-input" type="text" id="input-linkedin" name="linkedin"
+                      placeholder="tuusuario" autocomplete="off" />
+                  </div>
+                </div>
+
+                <!-- GitHub — solo el slug, con prefijo visual -->
+                <div class="form-group">
+                  <label class="form-label" for="input-github">GitHub</label>
+                  <div class="input-prefix-group">
+                    <span class="input-prefix">github.com/</span>
+                    <input class="form-input" type="text" id="input-github" name="github"
+                      placeholder="tuusuario" autocomplete="off" />
+                  </div>
+                </div>
+
+                <!-- ── Campos únicos por industria (ocultos por defecto) ── -->
+
+                <div class="form-group field-hidden" id="fg-extension">
+                  <label class="form-label" for="input-extension">Extensión</label>
+                  <input class="form-input" type="text" id="input-extension" name="extension"
+                    placeholder="" />
+                </div>
+
+                <div class="form-group field-hidden" id="fg-portfolio">
+                  <label class="form-label" for="input-portfolio">Portfolio</label>
+                  <input class="form-input" type="url" id="input-portfolio" name="portfolio"
+                    placeholder="" />
+                </div>
+
+                <div class="form-group field-hidden" id="fg-instagram">
+                  <label class="form-label" for="input-instagram">Instagram</label>
+                  <div class="input-prefix-group">
+                    <span class="input-prefix">instagram.com/</span>
+                    <input class="form-input" type="text" id="input-instagram" name="instagram"
+                      placeholder="" autocomplete="off" />
+                  </div>
+                </div>
+
+                <div class="form-group field-hidden" id="fg-behance">
+                  <label class="form-label" for="input-behance">Behance</label>
+                  <div class="input-prefix-group">
+                    <span class="input-prefix">behance.net/</span>
+                    <input class="form-input" type="text" id="input-behance" name="behance"
+                      placeholder="" autocomplete="off" />
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </details>
+
+          <!-- ════════════════════════════════════════════════════
+               SECCIÓN 3 — Diseño
+               ════════════════════════════════════════════════════ -->
+          <details class="accordion" id="section-design">
+            <summary class="accordion__header">
+              <span class="accordion__title">
+                <svg class="accordion__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M3 13l2.5-2.5M5.5 10.5L11 5l2 2-5.5 5.5-2 0 0-2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+                  <path d="M11 5l1-2 1 1-2 1z" fill="currentColor"/>
+                </svg>
+                Diseño
+              </span>
+              <svg class="accordion__chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true">
+                <path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </summary>
+            <div class="accordion__body">
+              <div class="accordion__content">
+
+                <!-- ── Temas rápidos ── -->
+                <div class="form-group">
+                  <span class="form-label">Tema</span>
+                  <div class="theme-chips" id="theme-chips"
+                    role="group" aria-label="Temas predefinidos"></div>
+                  <span class="form-hint">Aplica colores, fuente y plantilla de un click</span>
+                </div>
+
+                <!-- ── Selector de plantilla ── -->
+                <div class="form-group">
+                  <span class="form-label">Plantilla</span>
+                  <div class="template-picker" id="template-picker" role="radiogroup" aria-label="Seleccionar plantilla">
+
+                    <label class="template-option">
+                      <input type="radio" name="card-template" value="tech" class="visually-hidden" checked />
+                      <div class="template-card" aria-hidden="true">
+                        <div class="tp tp--minimal">
+                          <div class="tp__bar tp__bar--name"></div>
+                          <div class="tp__bar tp__bar--role"></div>
+                          <div class="tp__spacer"></div>
+                          <div class="tp__bar tp__bar--contact"></div>
+                          <div class="tp__bar tp__bar--contact tp__bar--short"></div>
+                        </div>
+                      </div>
+                      <span class="template-label">Tech</span>
+                    </label>
+
+                    <label class="template-option">
+                      <input type="radio" name="card-template" value="finance" class="visually-hidden" />
+                      <div class="template-card" aria-hidden="true">
+                        <div class="tp tp--corporate">
+                          <div class="tp__accent-bar"></div>
+                          <div class="tp__body">
+                            <div class="tp__logo"></div>
+                            <div class="tp__bar tp__bar--name"></div>
+                            <div class="tp__bar tp__bar--role"></div>
+                            <div class="tp__spacer"></div>
+                            <div class="tp__bar tp__bar--contact"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <span class="template-label">Finance</span>
+                    </label>
+
+                    <label class="template-option">
+                      <input type="radio" name="card-template" value="legal" class="visually-hidden" />
+                      <div class="template-card" aria-hidden="true">
+                        <div class="tp tp--bold">
+                          <div class="tp__bg-accent"></div>
+                          <div class="tp__bar tp__bar--name tp__bar--xl"></div>
+                          <div class="tp__bar tp__bar--role"></div>
+                          <div class="tp__divider"></div>
+                          <div class="tp__bar tp__bar--contact"></div>
+                          <div class="tp__bar tp__bar--contact tp__bar--short"></div>
+                          <div class="tp__qr"></div>
+                        </div>
+                      </div>
+                      <span class="template-label">Legal</span>
+                    </label>
+
+                    <label class="template-option">
+                      <input type="radio" name="card-template" value="zine" class="visually-hidden" />
+                      <div class="template-card" aria-hidden="true">
+                        <div class="tp tp--zine">
+                          <div class="tp__zine-tags">
+                            <div class="tp__zine-tag-acc"></div>
+                            <div class="tp__zine-tag"></div>
+                          </div>
+                          <div class="tp__zine-name"></div>
+                          <div class="tp__spacer"></div>
+                          <div class="tp__zine-rule"></div>
+                          <div class="tp__bar tp__bar--contact"></div>
+                          <div class="tp__bar tp__bar--contact tp__bar--short"></div>
+                        </div>
+                      </div>
+                      <span class="template-label">Zine</span>
+                    </label>
+
+                    <label class="template-option">
+                      <input type="radio" name="card-template" value="creative" class="visually-hidden" />
+                      <div class="template-card" aria-hidden="true">
+                        <div class="tp tp--pure">
+                          <div class="tp__bar tp__bar--name tp__bar--pure-name"></div>
+                          <div class="tp__pure-divider"></div>
+                          <div class="tp__bar tp__bar--role"></div>
+                          <div class="tp__spacer"></div>
+                          <div class="tp__bar tp__bar--contact tp__bar--pure-contact"></div>
+                          <div class="tp__pure-dot"></div>
+                        </div>
+                      </div>
+                      <span class="template-label">Creative</span>
+                    </label>
+
+                  </div>
+                </div>
+
+                <!-- ── Orientación ── -->
+                <div class="orientation-selector">
+                  <button class="orient-btn active" type="button" data-orient="horizontal"
+                    aria-label="Orientación horizontal">
+                    <svg width="16" height="12" viewBox="0 0 16 12" aria-hidden="true">
+                      <rect x="0.75" y="0.75" width="14.5" height="10.5" rx="1.75"
+                        fill="none" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                    Horizontal
+                  </button>
+                  <button class="orient-btn" type="button" data-orient="vertical"
+                    aria-label="Orientación vertical">
+                    <svg width="12" height="16" viewBox="0 0 12 16" aria-hidden="true">
+                      <rect x="0.75" y="0.75" width="10.5" height="14.5" rx="1.75"
+                        fill="none" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                    Vertical
+                  </button>
+                </div>
+
+                <!-- ── Color primario ── -->
+                <div class="form-group">
+                  <label class="form-label" for="input-color-primary">Color primario</label>
+                  <div class="color-picker-row">
+                    <input type="color" id="input-color-primary" class="color-native"
+                      value="#6c63ff" title="Seleccionar color primario" />
+                    <div class="color-presets" data-target="input-color-primary"
+                      role="group" aria-label="Presets de color primario">
+                      <button type="button" class="color-preset cpset--violet"
+                        data-color="#6c63ff" aria-label="Violeta"></button>
+                      <button type="button" class="color-preset cpset--blue"
+                        data-color="#3b82f6" aria-label="Azul"></button>
+                      <button type="button" class="color-preset cpset--emerald"
+                        data-color="#10b981" aria-label="Verde esmeralda"></button>
+                      <button type="button" class="color-preset cpset--amber"
+                        data-color="#f59e0b" aria-label="Naranja ámbar"></button>
+                      <button type="button" class="color-preset cpset--red"
+                        data-color="#ef4444" aria-label="Rojo"></button>
+                      <button type="button" class="color-preset cpset--pink"
+                        data-color="#ec4899" aria-label="Rosa"></button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ── Color secundario ── -->
+                <div class="form-group">
+                  <label class="form-label" for="input-color-secondary">Color secundario</label>
+                  <div class="color-picker-row">
+                    <input type="color" id="input-color-secondary" class="color-native"
+                      value="#1a1a2e" title="Seleccionar color secundario" />
+                    <div class="color-presets" data-target="input-color-secondary"
+                      role="group" aria-label="Presets de color secundario">
+                      <button type="button" class="color-preset cpset--midnight"
+                        data-color="#1a1a2e" aria-label="Azul noche"></button>
+                      <button type="button" class="color-preset cpset--slate-dark"
+                        data-color="#0f172a" aria-label="Slate oscuro"></button>
+                      <button type="button" class="color-preset cpset--slate"
+                        data-color="#1e293b" aria-label="Slate"></button>
+                      <button type="button" class="color-preset cpset--cream"
+                        data-color="#faf7f2" aria-label="Crema"></button>
+                      <button type="button" class="color-preset cpset--gray-light"
+                        data-color="#f1f5f9" aria-label="Gris claro"></button>
+                      <button type="button" class="color-preset cpset--white"
+                        data-color="#ffffff" aria-label="Blanco"></button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ── Tipografía (selector custom, cada opción en su propia fuente) ── -->
+                <div class="form-group">
+                  <span class="form-label" id="font-picker-label">Tipografía</span>
+                  <div class="font-picker" id="font-picker" role="combobox"
+                    aria-labelledby="font-picker-label" aria-expanded="false"
+                    aria-haspopup="listbox" tabindex="0">
+                    <div class="font-picker__trigger" id="font-picker-trigger">
+                      <span class="font-picker__value fopt--inter" id="font-picker-value">Inter</span>
+                      <svg class="font-picker__chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true">
+                        <path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.5"
+                          stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </div>
+                    <ul class="font-picker__dropdown" id="font-picker-dropdown"
+                      role="listbox" aria-labelledby="font-picker-label" hidden>
+                      <li class="font-picker__option fopt--inter" role="option"
+                        data-font="Inter" data-font-stack="'Inter', sans-serif"
+                        aria-selected="true" tabindex="-1">Inter</li>
+                      <li class="font-picker__option fopt--montserrat" role="option"
+                        data-font="Montserrat" data-font-stack="'Montserrat', sans-serif"
+                        aria-selected="false" tabindex="-1">Montserrat</li>
+                      <li class="font-picker__option fopt--playfair" role="option"
+                        data-font="Playfair Display" data-font-stack="'Playfair Display', serif"
+                        aria-selected="false" tabindex="-1">Playfair Display</li>
+                      <li class="font-picker__option fopt--raleway" role="option"
+                        data-font="Raleway" data-font-stack="'Raleway', sans-serif"
+                        aria-selected="false" tabindex="-1">Raleway</li>
+                      <li class="font-picker__option fopt--space-grotesk" role="option"
+                        data-font="Space Grotesk" data-font-stack="'Space Grotesk', sans-serif"
+                        aria-selected="false" tabindex="-1">Space Grotesk</li>
+                    </ul>
+                    <input type="hidden" id="select-font" name="font" value="Inter" />
+                  </div>
+                </div>
+
+                <!-- ── Logo: upload + preview circular 48px ── -->
+                <div class="form-group">
+                  <span class="form-label">Logo de empresa</span>
+                  <div class="logo-upload-area">
+                    <div class="logo-preview-circle" id="logo-preview-circle"
+                      aria-label="Vista previa del logo">
+                      <svg class="logo-placeholder-icon" viewBox="0 0 48 48"
+                        fill="none" aria-hidden="true">
+                        <circle cx="24" cy="24" r="23" stroke="currentColor"
+                          stroke-width="1.5" stroke-dasharray="4 3"/>
+                        <path d="M14 30l5-7 4 5 3-4 6 6H14z"
+                          fill="currentColor" opacity=".2"/>
+                        <circle cx="30" cy="19" r="2.5"
+                          fill="currentColor" opacity=".3"/>
+                      </svg>
+                      <img id="logo-preview-img" src="" alt="Logo de empresa" hidden />
+                    </div>
+                    <div class="logo-upload-controls">
+                      <label class="btn btn--ghost btn--sm logo-upload-btn" for="input-logo">
+                        <svg viewBox="0 0 14 14" fill="none" width="12" height="12"
+                          aria-hidden="true">
+                          <path d="M7 1v8M4 4l3-3 3 3" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                          <path d="M1 11h12" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        Subir imagen
+                      </label>
+                      <input type="file" id="input-logo" name="logo"
+                        accept="image/png,image/svg+xml,image/jpeg"
+                        class="visually-hidden"
+                        aria-label="Subir logo de empresa" />
+                      <button type="button" class="btn btn--ghost btn--sm"
+                        id="btn-remove-logo" hidden>Quitar</button>
+                      <span class="logo-hint">PNG, SVG o JPG</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </details>
+
+          <!-- ════════════════════════════════════════════════════
+               SECCIÓN 4 — Código QR
+               ════════════════════════════════════════════════════ -->
+          <details class="accordion" id="section-qr">
+            <summary class="accordion__header">
+              <span class="accordion__title">
+                <svg class="accordion__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <rect x="1.5" y="1.5" width="5" height="5" rx=".75" stroke="currentColor" stroke-width="1.3"/>
+                  <rect x="9.5" y="1.5" width="5" height="5" rx=".75" stroke="currentColor" stroke-width="1.3"/>
+                  <rect x="1.5" y="9.5" width="5" height="5" rx=".75" stroke="currentColor" stroke-width="1.3"/>
+                  <rect x="3" y="3" width="2" height="2" fill="currentColor"/>
+                  <rect x="11" y="3" width="2" height="2" fill="currentColor"/>
+                  <rect x="3" y="11" width="2" height="2" fill="currentColor"/>
+                  <path d="M9.5 9.5h2v2h-2zM11.5 11.5h2v2h-2zM9.5 13.5h2"
+                    stroke="currentColor" stroke-width="1.2"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Código QR
+              </span>
+              <svg class="accordion__chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true">
+                <path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </summary>
+            <div class="accordion__body">
+              <div class="accordion__content">
+
+                <!-- Toggle QR on/off -->
+                <div class="form-group form-group--inline">
+                  <label class="form-label" for="toggle-qr">Mostrar QR en la tarjeta</label>
+                  <button class="toggle" type="button" id="toggle-qr"
+                    role="switch" aria-checked="false" aria-label="Activar QR">
+                    <span class="toggle__thumb"></span>
+                  </button>
+                </div>
+                <p class="qr-info-note">El QR en el anverso horizontal ocupa su propia zona derecha. En tarjeta vertical el QR aparece solo en el reverso.</p>
+
+                <!-- Datos a incluir en el QR -->
+                <div class="form-group qr-panel" id="qr-options" aria-hidden="true">
+                  <span class="form-label">Datos en el QR</span>
+                  <div class="qr-field-chips">
+
+                    <label class="qr-chip">
+                      <input type="checkbox" class="qr-chip__input"
+                        id="qr-inc-phone" name="qr-data" value="phone" />
+                      <span class="qr-chip__body">
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                          <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 015 16a19.79 19.79 0 01-3.07-8.67A2 2 0 013.92 5.17h3a2 2 0 011.72 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L7.91 12.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 19.92z"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Tel
+                      </span>
+                    </label>
+
+                    <label class="qr-chip">
+                      <input type="checkbox" class="qr-chip__input"
+                        id="qr-inc-email" name="qr-data" value="email" checked />
+                      <span class="qr-chip__body">
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          <polyline points="22,6 12,13 2,6"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Email
+                      </span>
+                    </label>
+
+                    <label class="qr-chip">
+                      <input type="checkbox" class="qr-chip__input"
+                        id="qr-inc-web" name="qr-data" value="web" checked />
+                      <span class="qr-chip__body">
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                          <circle cx="12" cy="12" r="10"
+                            stroke="currentColor" stroke-width="2"/>
+                          <line x1="2" y1="12" x2="22" y2="12"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                          <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"
+                            stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        Web
+                      </span>
+                    </label>
+
+                    <label class="qr-chip">
+                      <input type="checkbox" class="qr-chip__input"
+                        id="qr-inc-linkedin" name="qr-data" value="linkedin" />
+                      <span class="qr-chip__body">
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                          <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          <rect x="2" y="9" width="4" height="12"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          <circle cx="4" cy="4" r="2"
+                            stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        LinkedIn
+                      </span>
+                    </label>
+
+                  </div>
+                </div>
+
+                <!-- Color del QR -->
+                <div class="form-group qr-panel" id="qr-color-group">
+                  <label class="form-label" for="input-qr-color">Color del QR</label>
+                  <div class="color-picker-row">
+                    <input type="color" id="input-qr-color" class="color-native"
+                      value="#000000" title="Color del código QR" />
+                    <div class="color-presets" data-target="input-qr-color"
+                      role="group" aria-label="Presets de color QR">
+                      <button type="button" class="color-preset cpset--black"
+                        data-color="#000000" aria-label="Negro"></button>
+                      <button type="button" class="color-preset cpset--midnight"
+                        data-color="#1a1a2e" aria-label="Azul noche"></button>
+                      <button type="button" class="color-preset cpset--navy"
+                        data-color="#1e3a5f" aria-label="Azul marino"></button>
+                      <button type="button" class="color-preset cpset--violet"
+                        data-color="#6c63ff" aria-label="Violeta"></button>
+                      <button type="button" class="color-preset cpset--emerald"
+                        data-color="#10b981" aria-label="Verde"></button>
+                      <button type="button" class="color-preset cpset--red"
+                        data-color="#ef4444" aria-label="Rojo"></button>
+                    </div>
+                  </div>
+                  <span class="form-hint">Fondo siempre blanco para legibilidad</span>
+                </div>
+
+                <!-- Descarga del contacto como .vcf -->
+                <div class="form-group qr-panel">
+                  <a id="download-vcf" class="btn-vcf" download="contacto.vcf" href="#">
+                    <span class="btn-vcf__icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" width="16" height="16">
+                        <rect x="3" y="2" width="18" height="20" rx="2"
+                          stroke="currentColor" stroke-width="2"/>
+                        <path d="M8 10h8M8 14h5"
+                          stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <circle cx="8" cy="7" r="1.5" fill="currentColor"/>
+                      </svg>
+                    </span>
+                    <span class="btn-vcf__text">
+                      <span class="btn-vcf__label">Guardar contacto</span>
+                      <span class="btn-vcf__hint">.vcf · iOS, Android, Outlook</span>
+                    </span>
+                    <svg class="btn-vcf__arrow" viewBox="0 0 14 14" fill="none" width="14" height="14" aria-hidden="true">
+                      <path d="M7 2v7M4 6l3 3 3-3" stroke="currentColor" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M2 11.5h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                  </a>
+                </div>
+
+                <!-- Contenedor del QR generado (oculto, usado por qr.js) -->
+                <div id="qr-container" hidden aria-hidden="true"></div>
+
+              </div>
+            </div>
+          </details>
+
+        </form>
+      </div><!-- /sidebar__scrollable -->
+
+      <!-- ── SIDEBAR FOOTER: botones de exportación ─────────── -->
+      <div class="sidebar__footer">
+        <!-- Fila 1: PNG + Compartir -->
+        <button class="btn btn--outline btn--export" id="btn-export-png" type="button">
+          <svg viewBox="0 0 14 14" fill="none" width="13" height="13" aria-hidden="true">
+            <path d="M7 1v8M4 9l3 3 3-3" stroke="currentColor"
+              stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M1 11.5h12" stroke="currentColor"
+              stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          Exportar PNG
+        </button>
+        <button class="btn btn--ghost btn--export" id="btn-share" type="button">
+          <svg viewBox="0 0 14 14" fill="none" width="13" height="13" aria-hidden="true">
+            <circle cx="11" cy="2.5" r="1.5" stroke="currentColor" stroke-width="1.3"/>
+            <circle cx="11" cy="11.5" r="1.5" stroke="currentColor" stroke-width="1.3"/>
+            <circle cx="3" cy="7" r="1.5" stroke="currentColor" stroke-width="1.3"/>
+            <path d="M4.4 6.2l5.1-2.9M4.4 7.8l5.1 2.9"
+              stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+          Compartir
+        </button>
+        <!-- Fila 2: PDF + Hoja A4 -->
+        <button class="btn btn--primary btn--export" id="btn-export-pdf" type="button">
+          <svg viewBox="0 0 14 14" fill="none" width="13" height="13" aria-hidden="true">
+            <rect x="2" y="1" width="10" height="12" rx="1.5"
+              stroke="currentColor" stroke-width="1.4"/>
+            <path d="M4.5 5h5M4.5 7.5h5M4.5 10h3"
+              stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+          Exportar PDF
+        </button>
+        <button class="btn btn--outline btn--export" id="btn-export-sheet" type="button"
+          title="PDF A4 con 10 tarjetas y líneas de corte">
+          <svg viewBox="0 0 14 14" fill="none" width="13" height="13" aria-hidden="true">
+            <rect x="1" y="1" width="12" height="12" rx="1"
+              stroke="currentColor" stroke-width="1.3"/>
+            <path d="M1 5h12M1 9h12M7 1v12"
+              stroke="currentColor" stroke-width="1" stroke-linecap="round"
+              stroke-dasharray="1.5 1"/>
+          </svg>
+          Hoja A4
+        </button>
+        <!-- Fila 3: Tarjeta Digital HTML -->
+        <button class="btn btn--outline btn--export btn--export-full" id="btn-export-digital" type="button"
+          title="HTML auto-contenido con contactos clicables y botón de guardar contacto">
+          <svg viewBox="0 0 14 14" fill="none" width="13" height="13" aria-hidden="true">
+            <rect x="1" y="2" width="12" height="10" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
+            <path d="M4.5 7h5M7 4.5v5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+          Tarjeta Digital (.html)
+        </button>
+      </div>
+
+    </aside><!-- /sidebar -->
+
+    <!-- ── PREVIEW AREA ────────────────────────────────────────── -->
+    <section class="preview-area" aria-label="Vista previa de la tarjeta">
+
+      <div class="preview-area__toolbar">
+        <span class="preview-area__label">Vista previa</span>
+        <div class="preview-area__zoom" role="group" aria-label="Zoom">
+          <button class="btn btn--ghost btn--sm" id="btn-zoom-out"
+            type="button" aria-label="Alejar">−</button>
+          <span class="preview-area__zoom-value" id="zoom-value">100%</span>
+          <button class="btn btn--ghost btn--sm" id="btn-zoom-in"
+            type="button" aria-label="Acercar">+</button>
+        </div>
+        <label class="preview-area__toggle-label">
+          <input type="checkbox" id="toggle-back-side" />
+          <span>Dorso</span>
+        </label>
+      </div>
+
+      <div class="preview-area__stage" id="preview-stage">
+        <div class="card-wrapper" id="card-wrapper">
+          <div id="card-preview" class="orient-horizontal" role="img" aria-label="Tarjeta de presentación">
+            <!-- ANVERSO -->
+            <div class="card-face card-front theme-tech">
+              <canvas class="card-bg-canvas"></canvas>
+              <div class="card-content-layer"></div>
+            </div>
+            <!-- REVERSO -->
+            <div class="card-face card-back theme-tech hidden">
+              <canvas class="card-bg-canvas"></canvas>
+              <div class="card-content-layer"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section><!-- /preview-area -->
+
+  </main>
+
+  <div class="toast-region" id="toast-region"
+    role="status" aria-live="polite" aria-atomic="true"></div>
+
+</div><!-- /app-wrapper -->
+
+<!-- JS Modules -->
+<script src="js/industries.js"></script>
+<script src="js/themes.js"></script>
+<script src="js/card.js"></script>
+<script src="js/qr.js"></script>
+<script src="js/export.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>

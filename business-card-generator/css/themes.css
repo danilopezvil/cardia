@@ -1,0 +1,265 @@
+/* =============================================================
+   THEMES.CSS — Variables CSS de temas y colores de tarjetas
+   Business Card Generator
+   =============================================================
+   Índice:
+   1. Tokens base del componente tarjeta (fallbacks)
+   2. Tema: Midnight (oscuro, azul noche)
+   3. Tema: Slate (gris pizarra)
+   4. Tema: Ivory (crema clásico)
+   5. Tema: Forest (verde oscuro)
+   6. Tema: Rose (rosa sofisticado)
+   7. Tema: Gold (dorado premium)
+   8. Tema: Ocean (azul profundo)
+   9. Tema: Chalk (blanco minimalista)
+  10. Clases de tipografía de tarjeta
+   ============================================================= */
+
+
+/* ─────────────────────────────────────────────────────────────
+   1. TOKENS BASE DEL COMPONENTE TARJETA
+   Valores por defecto; sobrescritos por cada [data-theme]
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  /* Colores de tarjeta */
+  --card-bg:           #1a1d27;
+  --card-bg-accent:    #22263a;
+  --card-text-primary: #e2e5f0;
+  --card-text-secondary: #9aa3c0;
+  --card-text-muted:   #5a6280;
+  --card-accent:       #6c63ff;
+  --card-accent-light: rgba(108, 99, 255, 0.12);
+  --card-border:       rgba(255, 255, 255, 0.08);
+  --card-divider:      rgba(255, 255, 255, 0.06);
+
+  /* Tipografía de tarjeta */
+  --card-font-primary:   'Inter', sans-serif;
+  --card-font-secondary: 'Inter', sans-serif;
+
+  /* Dimensiones estándar (85.6mm × 54mm a 96dpi ≈ 323px × 204px) */
+  --card-width:  340px;
+  --card-height: 215px;
+  --card-radius: 10px;
+  --card-padding: 24px;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   2. TEMA: MIDNIGHT
+   ───────────────────────────────────────────────────────────── */
+
+[data-theme="midnight"] {
+  --card-bg:             #0d1117;
+  --card-bg-accent:      #161b22;
+  --card-text-primary:   #f0f6fc;
+  --card-text-secondary: #8b949e;
+  --card-text-muted:     #484f58;
+  --card-accent:         #58a6ff;
+  --card-accent-light:   rgba(88, 166, 255, 0.1);
+  --card-border:         rgba(48, 54, 61, 1);
+  --card-divider:        rgba(48, 54, 61, 0.8);
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   3. TEMA: SLATE
+   ───────────────────────────────────────────────────────────── */
+
+[data-theme="slate"] {
+  --card-bg:             #1e293b;
+  --card-bg-accent:      #0f172a;
+  --card-text-primary:   #f1f5f9;
+  --card-text-secondary: #94a3b8;
+  --card-text-muted:     #475569;
+  --card-accent:         #818cf8;
+  --card-accent-light:   rgba(129, 140, 248, 0.12);
+  --card-border:         rgba(71, 85, 105, 0.4);
+  --card-divider:        rgba(71, 85, 105, 0.3);
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   4. TEMA: IVORY
+   ───────────────────────────────────────────────────────────── */
+
+[data-theme="ivory"] {
+  --card-bg:             #faf7f2;
+  --card-bg-accent:      #f0ebe0;
+  --card-text-primary:   #1a1108;
+  --card-text-secondary: #6b5e4b;
+  --card-text-muted:     #a89880;
+  --card-accent:         #b8763a;
+  --card-accent-light:   rgba(184, 118, 58, 0.1);
+  --card-border:         rgba(26, 17, 8, 0.1);
+  --card-divider:        rgba(26, 17, 8, 0.07);
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   5. TEMA: FOREST
+   ───────────────────────────────────────────────────────────── */
+
+[data-theme="forest"] {
+  --card-bg:             #0d1f14;
+  --card-bg-accent:      #132a1c;
+  --card-text-primary:   #e8f5e9;
+  --card-text-secondary: #81c784;
+  --card-text-muted:     #4a7c59;
+  --card-accent:         #66bb6a;
+  --card-accent-light:   rgba(102, 187, 106, 0.1);
+  --card-border:         rgba(102, 187, 106, 0.15);
+  --card-divider:        rgba(102, 187, 106, 0.08);
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   6. TEMA: ROSE
+   ───────────────────────────────────────────────────────────── */
+
+[data-theme="rose"] {
+  --card-bg:             #1f0d14;
+  --card-bg-accent:      #2d1220;
+  --card-text-primary:   #fce4ec;
+  --card-text-secondary: #f48fb1;
+  --card-text-muted:     #7c4a5e;
+  --card-accent:         #f06292;
+  --card-accent-light:   rgba(240, 98, 146, 0.12);
+  --card-border:         rgba(240, 98, 146, 0.15);
+  --card-divider:        rgba(240, 98, 146, 0.08);
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   7. TEMA: GOLD
+   ───────────────────────────────────────────────────────────── */
+
+[data-theme="gold"] {
+  --card-bg:             #100d00;
+  --card-bg-accent:      #1e1900;
+  --card-text-primary:   #fff8e1;
+  --card-text-secondary: #ffd54f;
+  --card-text-muted:     #7a6a20;
+  --card-accent:         #ffc107;
+  --card-accent-light:   rgba(255, 193, 7, 0.1);
+  --card-border:         rgba(255, 193, 7, 0.2);
+  --card-divider:        rgba(255, 193, 7, 0.1);
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   8. TEMA: OCEAN
+   ───────────────────────────────────────────────────────────── */
+
+[data-theme="ocean"] {
+  --card-bg:             #000d1a;
+  --card-bg-accent:      #001a33;
+  --card-text-primary:   #e0f2fe;
+  --card-text-secondary: #7dd3fc;
+  --card-text-muted:     #2f6699;
+  --card-accent:         #38bdf8;
+  --card-accent-light:   rgba(56, 189, 248, 0.1);
+  --card-border:         rgba(56, 189, 248, 0.15);
+  --card-divider:        rgba(56, 189, 248, 0.08);
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   9. TEMA: CHALK
+   ───────────────────────────────────────────────────────────── */
+
+[data-theme="chalk"] {
+  --card-bg:             #ffffff;
+  --card-bg-accent:      #f8f9fa;
+  --card-text-primary:   #111827;
+  --card-text-secondary: #6b7280;
+  --card-text-muted:     #9ca3af;
+  --card-accent:         #111827;
+  --card-accent-light:   rgba(17, 24, 39, 0.06);
+  --card-border:         rgba(17, 24, 39, 0.08);
+  --card-divider:        rgba(17, 24, 39, 0.05);
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   10. CLASES DE TIPOGRAFÍA DE TARJETA
+   Aplicadas al .business-card mediante themes.js
+   ───────────────────────────────────────────────────────────── */
+
+.card-font--inter {
+  --card-font-primary:   'Inter', sans-serif;
+  --card-font-secondary: 'Inter', sans-serif;
+}
+
+.card-font--montserrat {
+  --card-font-primary:   'Montserrat', sans-serif;
+  --card-font-secondary: 'Montserrat', sans-serif;
+}
+
+.card-font--playfair {
+  --card-font-primary:   'Playfair Display', serif;
+  --card-font-secondary: 'Inter', sans-serif;
+}
+
+.card-font--raleway {
+  --card-font-primary:   'Raleway', sans-serif;
+  --card-font-secondary: 'Raleway', sans-serif;
+}
+
+.card-font--space-grotesk {
+  --card-font-primary:   'Space Grotesk', sans-serif;
+  --card-font-secondary: 'Space Grotesk', sans-serif;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   11. CHIPS DE SELECCIÓN DE TEMA
+   Cada chip es un círculo bicolor (primary + secondary) que
+   permite aplicar un tema completo de un click.
+   ───────────────────────────────────────────────────────────── */
+
+.theme-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 2px 0;
+}
+
+.theme-chip {
+  --tc-p: #000;   /* primary  — sobreescrito inline por themes.js */
+  --tc-s: #fff;   /* secondary — sobreescrito inline por themes.js */
+
+  width:  36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  padding: 0;
+  cursor: pointer;
+  flex-shrink: 0;
+
+  /* Gradiente diagonal: mitad primary / mitad secondary */
+  background: linear-gradient(135deg, var(--tc-p) 50%, var(--tc-s) 50%);
+
+  transition:
+    transform         150ms ease,
+    box-shadow        150ms ease,
+    border-color      150ms ease,
+    outline-offset    150ms ease;
+}
+
+.theme-chip:hover {
+  transform:  scale(1.18);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+}
+
+/* Chip activo: anillo exterior usando el color de texto del sidebar */
+.theme-chip--active {
+  border-color: var(--color-text, #e2e5f0);
+  box-shadow:   0 0 0 2px var(--color-text, #e2e5f0);
+  transform:    scale(1.12);
+}
+
+.theme-chip:focus-visible {
+  outline:        2px solid var(--color-accent, #6c63ff);
+  outline-offset: 3px;
+}
