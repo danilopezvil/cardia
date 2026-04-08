@@ -15,6 +15,7 @@
   --color-brand-secondary: #00c8ff;
   --color-border-subtle: #28304b;
   --color-focus: #57b6ff;
+  --color-danger: #ff7171;
 
   --font-family-sans: Inter, Avenir, Montserrat, 'Segoe UI', sans-serif;
   --font-size-xs: 0.75rem;
@@ -76,17 +77,41 @@ ul {
   margin-bottom: var(--space-4);
 }
 
-.surface__list {
+.editor-form {
   display: grid;
-  gap: var(--space-2);
-  padding-left: var(--space-5);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.editor-field {
+  display: grid;
+  gap: var(--space-1);
   color: var(--color-fg-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.editor-field input,
+.editor-field select {
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-subtle);
+  background: var(--color-bg-elevated);
+  color: var(--color-fg-primary);
+  min-height: 2.25rem;
+  padding: 0 var(--space-2);
+}
+
+.editor-field small {
+  color: var(--color-danger);
 }
 
 .card-preview-grid {
   display: grid;
   gap: var(--space-4);
   grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+}
+
+.card-preview-grid--portrait .business-card {
+  aspect-ratio: 1 / 1.45;
 }
 
 .business-card {
@@ -97,11 +122,44 @@ ul {
 }
 
 .business-card--front {
-  background: linear-gradient(130deg, #ffffff, #e7ecff);
-  color: var(--color-fg-strong);
   display: grid;
   align-content: center;
   gap: var(--space-2);
+}
+
+.business-card--back {
+  border: 1px solid #2f3a5c;
+  display: grid;
+  place-items: center;
+  gap: var(--space-3);
+}
+
+.business-card--midnight.business-card--front {
+  background: linear-gradient(130deg, #ffffff, #e7ecff);
+  color: var(--color-fg-strong);
+}
+
+.business-card--midnight.business-card--back {
+  background: linear-gradient(165deg, #171c2f, #111522);
+}
+
+.business-card--light.business-card--front {
+  background: linear-gradient(130deg, #ffffff, #f7f8ff);
+  color: #1a1f31;
+}
+
+.business-card--light.business-card--back {
+  background: linear-gradient(165deg, #dde3ff, #cad6ff);
+  color: #0f1630;
+}
+
+.business-card--ocean.business-card--front {
+  background: linear-gradient(130deg, #e8fffd, #d2f0ff);
+  color: #08233b;
+}
+
+.business-card--ocean.business-card--back {
+  background: linear-gradient(165deg, #00364e, #012839);
 }
 
 .business-card__name {
@@ -111,22 +169,20 @@ ul {
 
 .business-card__role {
   font-size: var(--font-size-md);
-  color: #364062;
 }
 
 .business-card__company,
 .business-card__contact,
 .business-card__hint {
   font-size: var(--font-size-sm);
-  color: #596586;
+  opacity: 0.9;
 }
 
-.business-card--back {
-  background: linear-gradient(165deg, #171c2f, #111522);
-  border: 1px solid #2f3a5c;
-  display: grid;
-  place-items: center;
-  gap: var(--space-3);
+.business-card__qrvalue {
+  max-width: 90%;
+  color: #d6ddf7;
+  font-size: 0.65rem;
+  text-align: center;
 }
 
 .qr-placeholder {
@@ -140,7 +196,19 @@ ul {
   letter-spacing: 0.08em;
 }
 
+.preview-error {
+  margin-top: var(--space-3);
+  color: var(--color-danger);
+  font-size: var(--font-size-sm);
+}
+
 :focus-visible {
   outline: 3px solid var(--color-focus);
   outline-offset: 2px;
+}
+
+@media (max-width: 720px) {
+  .editor-form {
+    grid-template-columns: 1fr;
+  }
 }
