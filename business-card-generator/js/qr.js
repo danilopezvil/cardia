@@ -1,13 +1,20 @@
 'use strict';
 
+const QR_MAX_PAYLOAD_LENGTH = 2400;
+
 function buildVCard(data) {
+  const name = data.name || '';
+  const role = data.role || data.title || '';
+  const organization = data.organization || data.company || '';
+
   const lines = [
     'BEGIN:VCARD',
     'VERSION:4.0',
-    `FN:${data.name || ''}`,
+    `FN:${name}`,
   ];
-  if (data.title)     lines.push(`TITLE:${data.title}`);
-  if (data.company)   lines.push(`ORG:${data.company}`);
+
+  if (role)          lines.push(`TITLE:${role}`);
+  if (organization)  lines.push(`ORG:${organization}`);
   if (data.phone) {
     const tel = [data.phoneCountry, data.phone].filter(Boolean).join(' ');
     lines.push(`TEL;TYPE=CELL:${tel}`);
@@ -16,37 +23,44 @@ function buildVCard(data) {
   if (data.website)  lines.push(`URL:${data.website}`);
   if (data.linkedin) lines.push(`X-SOCIALPROFILE;TYPE=linkedin:https://linkedin.com/in/${data.linkedin}`);
   if (data.github)   lines.push(`X-SOCIALPROFILE;TYPE=github:https://github.com/${data.github}`);
-  if (data.logo && /^data:image/.test(data.logo)) {
-    const m = data.logo.match(/^data:image\/(\w+);base64,(.+)$/);
-    if (m) lines.push(`PHOTO;ENCODING=b;TYPE=${m[1].toUpperCase()}:${m[2]}`);
-  }
+
   lines.push('END:VCARD');
   return lines.join('\r\n');
+}
+
+function _getQRSize(container, face) {
+  const parent = container.closest('.card-face');
+  const usable = Math.min(parent?.clientWidth || 0, parent?.clientHeight || 0) || 180;
+  const ratio = face === 'back' ? 0.58 : 0.24;
+  const raw = Math.floor(usable * ratio);
+  const min = face === 'back' ? 110 : 68;
+  const max = face === 'back' ? 210 : 92;
+  return Math.max(min, Math.min(max, raw));
+}
+
+function _resolveECC(level) {
+  if (typeof QRCode === 'undefined') return null;
+  return level === 'Q' ? QRCode.CorrectLevel.Q : QRCode.CorrectLevel.M;
 }
 
 function generateQR(container, data, face) {
   if (typeof QRCode === 'undefined') return;
   container.innerHTML = '';
 
-  const isVertical = data.orientation === 'vertical';
-  const isBack     = face === 'back';
-
-  let size;
-  if (isBack) {
-    size = isVertical ? 140 : 110;
-  } else {
-    size = isVertical ? 80 : 70;
-  }
-
+  const size = _getQRSize(container, face);
   const content = (data.qrMode === 'digital' && data.digitalUrl)
-    ? data.digitalUrl
+    ? data.digitalUrl.trim()
     : buildVCard(data);
 
   if (!content) return;
+  if (content.length > QR_MAX_PAYLOAD_LENGTH) {
+    console.warn('[QR] Payload demasiado largo para QR estable:', content.length);
+    return;
+  }
 
   const isZine = data.template === 'zine';
-  const darkColor  = isZine ? '#1a1a1a' : (data.primaryColor  || '#000000');
-  const lightColor = isZine ? '#f5f0e8' : '#ffffff';
+  const darkColor  = isZine ? '#1a1a1a' : (data.primaryColor || '#1f2937');
+  const lightColor = '#ffffff';
 
   try {
     new QRCode(container, {
@@ -55,9 +69,9 @@ function generateQR(container, data, face) {
       height:       size,
       colorDark:    darkColor,
       colorLight:   lightColor,
-      correctLevel: QRCode.CorrectLevel.M,
+      correctLevel: _resolveECC(data.qrEcc || 'Q'),
     });
-  } catch(e) {
+  } catch (e) {
     console.warn('[QR] Error generando QR:', e);
   }
 }

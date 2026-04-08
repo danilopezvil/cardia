@@ -710,7 +710,7 @@ function _bindOrientationToggle() {
  * Aplica el esquema de color guardado en localStorage al arrancar.
  */
 function _initColorScheme() {
-  const saved = localStorage.getItem(COLOR_SCHEME_KEY) ?? 'dark';
+  const saved = localStorage.getItem(COLOR_SCHEME_KEY) ?? 'light';
   _applyColorScheme(saved, false);
 }
 
@@ -736,7 +736,7 @@ function _bindDarkModeToggle() {
   const btn = document.getElementById('btn-color-scheme');
   if (!btn) return;
   btn.addEventListener('click', () => {
-    const current = document.documentElement.dataset.colorScheme ?? 'dark';
+    const current = document.documentElement.dataset.colorScheme ?? 'light';
     _applyColorScheme(current === 'dark' ? 'light' : 'dark');
   });
 }
