@@ -1,16 +1,14 @@
 import type { CardTemplateComponent } from '../types';
-import { getFullName, getQrPayload } from '../helpers';
+import { getFullName } from '../helpers';
 
-export const LegalTemplate: CardTemplateComponent = ({ document, side }) => {
+export const LegalTemplate: CardTemplateComponent = ({ document, side, qrImageUrl, qrPayload }) => {
   if (side === 'back') {
     return (
       <>
         <p className="business-card__kicker">legal contact</p>
-        <div className="qr-placeholder" role="img" aria-label="Legal QR placeholder">
-          QR
-        </div>
+        <img className="qr-image" src={qrImageUrl} alt="QR para consulta legal" loading="lazy" />
         <p className="business-card__hint">Schedule legal consultation</p>
-        <code className="business-card__qrvalue">{getQrPayload(document).slice(0, 68)}...</code>
+        <code className="business-card__qrvalue">{qrPayload.slice(0, 68)}...</code>
       </>
     );
   }

@@ -1,16 +1,14 @@
 import type { CardTemplateComponent } from '../types';
-import { getFullName, getQrPayload } from '../helpers';
+import { getFullName } from '../helpers';
 
-export const TechTemplate: CardTemplateComponent = ({ document, side }) => {
+export const TechTemplate: CardTemplateComponent = ({ document, side, qrImageUrl, qrPayload }) => {
   if (side === 'back') {
     return (
       <>
         <p className="business-card__kicker">developer profile</p>
-        <div className="qr-placeholder" role="img" aria-label="Tech QR placeholder">
-          QR
-        </div>
+        <img className="qr-image" src={qrImageUrl} alt="QR para abrir perfil técnico" loading="lazy" />
         <p className="business-card__hint">Open profile / add contact</p>
-        <code className="business-card__qrvalue">{getQrPayload(document).slice(0, 68)}...</code>
+        <code className="business-card__qrvalue">{qrPayload.slice(0, 68)}...</code>
       </>
     );
   }

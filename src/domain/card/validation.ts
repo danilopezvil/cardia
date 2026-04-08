@@ -74,6 +74,19 @@ export function validateCardDocument(input: CardDocument): CardValidationErrors 
     }
   }
 
+
+  if (doc.back.qrMode === 'vcard') {
+    const hasName = Boolean(doc.front.firstName || doc.front.lastName);
+    const hasContact = Boolean(doc.front.email || doc.front.phone);
+
+    if (!hasName) {
+      errors['back.vcard.name'] = 'vCard requires at least first or last name';
+    }
+
+    if (!hasContact) {
+      errors['back.vcard.contact'] = 'vCard requires email or phone';
+    }
+  }
   if (doc.back.qrMode === 'url') {
     try {
       // eslint-disable-next-line no-new

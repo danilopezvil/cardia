@@ -1,15 +1,13 @@
 import type { CardTemplateComponent } from '../types';
-import { getFullName, getQrPayload } from '../helpers';
+import { getFullName } from '../helpers';
 
-export const MinimalTemplate: CardTemplateComponent = ({ document, side }) => {
+export const MinimalTemplate: CardTemplateComponent = ({ document, side, qrImageUrl, qrPayload }) => {
   if (side === 'back') {
     return (
       <>
         <p className="business-card__kicker">connect</p>
-        <div className="qr-placeholder" role="img" aria-label="Minimal QR placeholder">
-          QR
-        </div>
-        <code className="business-card__qrvalue">{getQrPayload(document).slice(0, 68)}...</code>
+        <img className="qr-image" src={qrImageUrl} alt="QR de contacto" loading="lazy" />
+        <code className="business-card__qrvalue">{qrPayload.slice(0, 68)}...</code>
       </>
     );
   }

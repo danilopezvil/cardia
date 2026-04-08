@@ -199,6 +199,15 @@ ul {
   text-align: center;
 }
 
+.qr-image {
+  width: min(8rem, 65%);
+  aspect-ratio: 1;
+  border-radius: calc(var(--radius-sm) - 2px);
+  background: #fff;
+  padding: 0.45rem;
+  border: 8px solid #fff;
+}
+
 .qr-placeholder {
   width: 7rem;
   aspect-ratio: 1;

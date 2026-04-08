@@ -1,15 +1,13 @@
 import type { CardTemplateComponent } from '../types';
-import { getFullName, getQrPayload } from '../helpers';
+import { getFullName } from '../helpers';
 
-export const CorporateTemplate: CardTemplateComponent = ({ document, side }) => {
+export const CorporateTemplate: CardTemplateComponent = ({ document, side, qrImageUrl, qrPayload }) => {
   if (side === 'back') {
     return (
       <>
-        <div className="qr-placeholder" role="img" aria-label="Corporate QR placeholder">
-          QR
-        </div>
+        <img className="qr-image" src={qrImageUrl} alt="QR de contacto" loading="lazy" />
         <p className="business-card__hint">{document.back.note ?? 'Scan to save contact'}</p>
-        <code className="business-card__qrvalue">{getQrPayload(document).slice(0, 84)}...</code>
+        <code className="business-card__qrvalue">{qrPayload.slice(0, 84)}...</code>
       </>
     );
   }

@@ -1,16 +1,14 @@
 import type { CardTemplateComponent } from '../types';
-import { getFullName, getQrPayload } from '../helpers';
+import { getFullName } from '../helpers';
 
-export const HealthTemplate: CardTemplateComponent = ({ document, side }) => {
+export const HealthTemplate: CardTemplateComponent = ({ document, side, qrImageUrl, qrPayload }) => {
   if (side === 'back') {
     return (
       <>
         <p className="business-card__kicker">health profile</p>
-        <div className="qr-placeholder" role="img" aria-label="Health QR placeholder">
-          QR
-        </div>
+        <img className="qr-image" src={qrImageUrl} alt="QR para agendar cita" loading="lazy" />
         <p className="business-card__hint">Book appointment</p>
-        <code className="business-card__qrvalue">{getQrPayload(document).slice(0, 68)}...</code>
+        <code className="business-card__qrvalue">{qrPayload.slice(0, 68)}...</code>
       </>
     );
   }
