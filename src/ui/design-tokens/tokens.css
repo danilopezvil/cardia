@@ -104,6 +104,30 @@ ul {
   color: var(--color-danger);
 }
 
+
+.export-actions {
+  margin-top: var(--space-4);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.export-actions button {
+  border: 1px solid var(--color-border-subtle);
+  background: linear-gradient(180deg, #33406f, #25335e);
+  color: #f5f8ff;
+  border-radius: var(--radius-sm);
+  min-height: 2.5rem;
+  padding: 0 var(--space-3);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.export-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .card-preview-grid {
   display: grid;
   gap: var(--space-4);

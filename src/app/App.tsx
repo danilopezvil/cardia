@@ -11,7 +11,7 @@ export function App() {
           <p className="app-shell__eyebrow">Cardia Studio</p>
           <h1 className="app-shell__title">Business Card Builder</h1>
           <p className="app-shell__subtitle">
-            Fase 4: QR real (vCard/URL) integrado y optimizado para escaneabilidad.
+            Fase 5: exportación de tarjeta a PNG y flujo PDF para impresión.
           </p>
         </header>
 

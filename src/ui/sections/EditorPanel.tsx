@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { useCardStore } from '../../application/use-cases';
 import type { CardOrientation, CardQrMode, CardTemplate, CardTheme } from '../../domain/card';
+import { exportCardToPdf, exportFrontToPng } from '../../services/export';
 
 const templateOptions: { value: CardTemplate; label: string }[] = [
   { value: 'corporate', label: 'Corporate' },
@@ -37,6 +39,45 @@ export function EditorPanel() {
     setOrientation,
     setQrMode,
   } = useCardStore();
+
+  const [exportError, setExportError] = useState<string | null>(null);
+  const [isExporting, setIsExporting] = useState(false);
+
+  const hasCriticalErrors = Object.keys(errors).length > 0;
+
+  async function handlePngExport() {
+    setExportError(null);
+    if (hasCriticalErrors) {
+      setExportError('Corrige los errores de validación antes de exportar.');
+      return;
+    }
+
+    setIsExporting(true);
+    try {
+      await exportFrontToPng(document);
+    } catch (error) {
+      setExportError(error instanceof Error ? error.message : 'No se pudo exportar PNG.');
+    } finally {
+      setIsExporting(false);
+    }
+  }
+
+  async function handlePdfExport() {
+    setExportError(null);
+    if (hasCriticalErrors) {
+      setExportError('Corrige los errores de validación antes de exportar.');
+      return;
+    }
+
+    setIsExporting(true);
+    try {
+      await exportCardToPdf(document);
+    } catch (error) {
+      setExportError(error instanceof Error ? error.message : 'No se pudo exportar PDF.');
+    } finally {
+      setIsExporting(false);
+    }
+  }
 
   return (
     <aside className="surface" aria-labelledby="editor-panel-title">
@@ -173,6 +214,21 @@ export function EditorPanel() {
           </select>
         </label>
       </form>
+
+      <div className="export-actions" aria-label="Card export actions">
+        <button type="button" onClick={handlePngExport} disabled={isExporting}>
+          Export PNG (front)
+        </button>
+        <button type="button" onClick={handlePdfExport} disabled={isExporting}>
+          Export PDF (front + back)
+        </button>
+      </div>
+
+      {exportError && (
+        <p className="preview-error" role="alert">
+          {exportError}
+        </p>
+      )}
     </aside>
   );
 }
